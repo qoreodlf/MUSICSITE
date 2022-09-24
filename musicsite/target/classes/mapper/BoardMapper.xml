@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="board">
+
+	<insert id="addaboard" parameterType="aboard">
+		insert into albumboard values (abseq.nextval, #{userEmail},#{album},#{artist}, sysdate)
+	</insert>
+	
+	<select id="albumboardlist" resultType="aboard">
+		select * from userinfo u, albumboard a where a.useremail = u.useremail
+	</select>
+	
+	<select id="albumboardone" parameterType="int" resultType="aboard">
+		select * from userinfo u, albumboard a where a.useremail = u.useremail and no = ${value}
+	</select>
+	
+	<!-- ...............single board................ -->
+	<insert id="addsboard" parameterType="sboard">
+		insert into singleboard values (sbseq.nextval, #{userEmail},#{single},#{artist}, sysdate)
+	</insert>
+	
+	
+	<select id="selectsingle" parameterType="stitle" resultType="stitle">
+		select * from singletitle where artist=#{artist} and title=#{title}
+	</select>
+	
+	<insert id="addsingletitle" parameterType="stitle">
+		insert into singletitle values (#{artist}, #{title}, #{URL}, #{videoId})
+	</insert>
+	
+</mapper>

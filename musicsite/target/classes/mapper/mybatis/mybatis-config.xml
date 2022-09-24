@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org/DTD config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<typeAliases>
+		<typeAlias type="model.User" alias="user" />
+		<typeAlias type="model.AlbumBoard" alias="aboard" />
+		<typeAlias type="model.SingleBoard" alias="sboard" />
+		<typeAlias type="model.SingleTitle" alias="stitle" />
+	</typeAliases>
+
+	<mappers><!-- sql구문 -->
+		<mapper resource="mapper/UserMapper.xml" />
+		<mapper resource="mapper/BoardMapper.xml" />
+
+	</mappers>
+</configuration>
