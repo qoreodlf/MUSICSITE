@@ -34,7 +34,7 @@
 		<form id="addSinglePro"
 			action="${pageContext.request.contextPath}/board/addsingleboardpro"
 			method="post">                                  
-			<input type="hidden" id="addSingle" name="single"> <input
+			<input type="hidden" id="addSingle" name="title"> <input
 				type="hidden" id="addArtist" name="artist">
 			<button class="btn btn-secondary" type="button" onclick="addSingleTitle()">등록</button>
 		</form>
@@ -75,7 +75,7 @@
 			a += '<div class="fw-bold">'+artist+'</div>'+track				
 			a += '</div> <span class="badge bg-primary rounded-pill">'+time+'</span>'
 			a += '<div id="urldiv"></div>'
-			hasURL(artist, track, "")
+			hasURL(artist, track)
 			a += '</li>'
 			
 			document.getElementById("tracklist").innerHTML = a

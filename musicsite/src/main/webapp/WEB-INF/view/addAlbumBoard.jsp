@@ -34,7 +34,7 @@
 		<form id="addAlbumPro"
 			action="${pageContext.request.contextPath}/board/addalbumboardpro"
 			method="post">
-			<input type="hidden" id="addAlbum" name="album"> <input
+			<input type="hidden" id="addAlbum" name="title"> <input
 				type="hidden" id="addArtist" name="artist">
 			<button class="btn btn-secondary" type="button" onclick="addSingleTitle()">등록</button>
 		</form>
@@ -91,21 +91,7 @@
 		})
 	}
 	
-	/* function hasURL(artist, title, i) {
-		var url = '${pageContext.request.contextPath}/board/hasurl?artist=' + artist + '&title=' + title
-		fetch(url)
-			.then(res => res.text())
-			.then(result => {
-				if (result == 0) {
-					var a = '<form id="' + i + '" action="${pageContext.request.contextPath}/board/addsingletitle">'
-					a += '<input type="text" class="form-control" id="URL' + i + '" placeholder="youtube URL">'
-					a += '<input type = "hidden" id="artist' + i + '" value="' + artist + '">'
-					a += '<input type = "hidden" id="title' + i + '" value="' + title + '"></form>'
-					document.getElementById("urldiv" + i).innerHTML = a
-				}
-			})
 
-	} */
 	
 	function addSingleTitle() {
 		for(var i = 0; i<numTrack; i++){

@@ -5,9 +5,9 @@
 
 	<typeAliases>
 		<typeAlias type="model.User" alias="user" />
-		<typeAlias type="model.AlbumBoard" alias="aboard" />
-		<typeAlias type="model.SingleBoard" alias="sboard" />
+		<typeAlias type="model.MusicBoard" alias="mboard" />
 		<typeAlias type="model.SingleTitle" alias="stitle" />
+		<typeAlias type="model.Reply" alias="reply" />
 	</typeAliases>
 
 	<mappers><!-- sql구문 -->

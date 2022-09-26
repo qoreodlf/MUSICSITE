@@ -9,10 +9,16 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class SingleBoard {
+public class MusicBoard {
+	int no;
 	String userEmail;
+	String title;
 	String artist;
-	String single;
 	Date boardDate;
 	String userNickname;
+	String bdType;
+	int recocnt;
+	int readcnt;
+	
+	
 }

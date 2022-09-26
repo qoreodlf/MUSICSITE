@@ -19,7 +19,7 @@
 		<table class="table table-striped table-hover">
 			<thead>
 				<tr>
-					<th scope="col">제목</th>
+					<th scope="col">제목 ${param.bdType}</th>
 					<th scope="col">작성자</th>
 					<th scope="col">조회수</th>
 					<th scope="col">추천</th>
@@ -27,7 +27,20 @@
 				</tr>
 			</thead>
 			<tbody class="table-group-divider">
-			<c:forEach var="i" items="${abList}">
+			<c:if test="${param.bdType eq 's'}">
+			<c:forEach var="i" items="${mbList}">
+				<tr>
+					<td class="w-50"><a href="${pageContext.request.contextPath}/board/singleboardpost?no=${i.no}">${i.artist} - ${i.title}</a></th>
+					<td class="w-10">${i.userNickname}</td>
+					<td class="w-10">${i.readcnt}</td>
+					<td class="w-10">${i.recocnt}</td>
+					<td class="w-10"><fmt:formatDate value="${i.boardDate}"
+							pattern="yyyy.MM.dd" /></td>
+				</tr>
+				</c:forEach>
+			</c:if>
+			<c:if test="${param.bdType eq 'a'}">
+			<c:forEach var="i" items="${mbList}">
 				<tr>
 					<td class="w-50"><a href="${pageContext.request.contextPath}/board/albumboardpost?no=${i.no}">${i.artist} - ${i.title}</a></th>
 					<td class="w-10">${i.userNickname}</td>
@@ -37,6 +50,7 @@
 							pattern="yyyy.MM.dd" /></td>
 				</tr>
 				</c:forEach>
+			</c:if>
 			</tbody>
 		</table>
 

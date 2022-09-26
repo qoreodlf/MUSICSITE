@@ -27,9 +27,9 @@
 				</tr>
 			</thead>
 			<tbody class="table-group-divider">
-			<c:forEach var="i" items="${abList}">
+			<c:forEach var="i" items="${sbList}">
 				<tr>
-					<td class="w-50"><a href="${pageContext.request.contextPath}/board/albumboardpost?no=${i.no}">${i.artist} - ${i.title}</a></th>
+					<td class="w-50"><a href="${pageContext.request.contextPath}/board/singleboardpost?no=${i.no}">${i.artist} - ${i.title}</a></th>
 					<td class="w-10">${i.userNickname}</td>
 					<td class="w-10">${i.readcnt}</td>
 					<td class="w-10">${i.recocnt}</td>
