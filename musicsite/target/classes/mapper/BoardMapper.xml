@@ -5,27 +5,19 @@
 
 	<insert id="addmusicboard" parameterType="mboard">
 		insert into musicboard values 
-		(abseq.nextval, #{userEmail},#{title},#{artist}, sysdate, #{bdType}, 0, 0)
+		(abseq.nextval, #{userEmail},#{title},#{artist},
+		 sysdate, #{bdType}, 0, 0, #{bdText}, #{url}, #{videoId})
 	</insert>
 	
 	<select id="musicboardlist" resultType="mboard" parameterType="string">
 		select * from userinfo u, musicboard m where m.useremail = u.useremail and bdtype = #{value} order by m.boarddate desc
 	</select>
 	
-	
-	
-	<select id="albumboardone" parameterType="int" resultType="mboard">
+	<select id="musicboardone" parameterType="int" resultType="mboard">
 		select * from userinfo u, musicboard m where m.useremail = u.useremail
-		and no = #{value} and bdtype = 'a'
+		and no = #{value}
 	</select>
 	
-	<!-- ...............single board................ -->
-	
-	
-	<select id="singleboardone" parameterType="int" resultType="mboard">
-		select * from userinfo u, musicboard m where m.useremail = u.useremail
-		and no = #{value} and bdtype = 's'
-	</select>
 	
 	
 	

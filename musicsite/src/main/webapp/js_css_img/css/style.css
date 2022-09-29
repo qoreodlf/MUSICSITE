@@ -1,0 +1,81 @@
+@charset "UTF-8";
+
+body {
+	padding-top: 100px;
+	padding-bottom: 100px
+}
+
+header {
+	position: fixed;
+	top: 0;
+	/* width: 100% */
+	left: 0;
+	right: 0;
+	height: 75px;
+	z-index: 20;
+	/* 생략 */
+}
+
+.outer {
+	
+}
+
+.container {
+	
+}
+
+.container-main {
+	margin: 0 auto;
+	width: 750px
+}
+
+.container-loginout {
+	margin: 0 auto;
+	width: 400px
+}
+
+.addmbInput{
+	margin: 0 auto;
+	width: 50%
+}
+
+.hasMarg {
+	margin: 15px
+}
+
+.button {
+	margin: 15px
+}
+
+.center {
+	text-align: center
+}
+
+.playtime {
+	width: 70px;
+	margin: 10px
+}
+
+.playButton {
+	margin: 10px
+}
+
+.ytVideo {
+	z-index: 20;
+	position: fixed;
+	left: 0px;
+	bottom: 0px
+}
+
+.rightButton {
+	float: right;
+	margin-top: 15px
+	
+}
+.urldiv{
+	margin-right: 20px
+}
+#livevideo{
+	margin: 0 auto;
+	width: 665px
+}

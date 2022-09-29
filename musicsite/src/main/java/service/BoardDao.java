@@ -34,28 +34,12 @@ public class BoardDao {
 		List<MusicBoard> mbList = session.selectList(ns+"musicboardlist", bdType);
 		return mbList;
 	}
-	///////////////album board/////////////////////
-	public List<MusicBoard> albumBoardList() {
-		List<MusicBoard> albumList = session.selectList(ns+"albumboardlist");
-		return albumList;
-	}
 	
-	public MusicBoard albumBoardOne(int no) {
-		MusicBoard selectedAB = session.selectOne(ns+"albumboardone", no);
-		return selectedAB;
+	public MusicBoard musicBoardOne(int no) {
+		MusicBoard selectedMB = session.selectOne(ns+"musicboardone", no);
+		return selectedMB;
 	}
-	
-	
-	//////////////////////single board////////////////////
-	public List<MusicBoard> singleBoardList() {
-		List<MusicBoard> sbList= session.selectList(ns+"singleboardlist");
-		return sbList;
-	}
-	
-	public MusicBoard singleBoardOne(int no) {
-		MusicBoard selectedSB = session.selectOne(ns+"singleboardone", no);
-		return selectedSB;
-	}
+
 	
 	
 	//////////////////////////////////////////////////////////

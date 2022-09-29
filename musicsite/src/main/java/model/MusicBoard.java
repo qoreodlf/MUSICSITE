@@ -19,6 +19,9 @@ public class MusicBoard {
 	String bdType;
 	int recocnt;
 	int readcnt;
+	String bdText;
+	String url;
+	String videoId;
 	
 	
 }

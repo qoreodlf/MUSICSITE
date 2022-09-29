@@ -40,57 +40,41 @@ public class BoardController {
 		request.setAttribute("mbList", mbList);
 		return "musicBoard";
 	}
-	//////////////////////////////////////////////// ALBUM
-	//////////////////////////////////////////////// BOARD///////////////////////
-
-	@RequestMapping("albumboardpost")
-	public String albumBoardPost(int no) throws Exception {
+	
+	@RequestMapping("musicboardpost")
+	public String musicBoardPost(int no) throws Exception {
 		int num = bd.readCountUp(no);
-		MusicBoard abOne = bd.albumBoardOne(no);
-		request.setAttribute("abOne", abOne);
-		return "albumBoardPost";
+		MusicBoard mbOne = bd.musicBoardOne(no);
+		request.setAttribute("mbOne", mbOne);
+		return "musicBoardPost";
 	}
-
-	@RequestMapping("addalbumboard")
-	public String addAlbumBoard() throws Exception {
-		return "addAlbumBoard";
+	
+	@RequestMapping("addmusicboard")
+	public String addmusicBoard() throws Exception {
+		return "addMusicBoard";
 	}
-
-	@RequestMapping("addalbumboardpro")
-	public String addAlbumBoardPro(MusicBoard musicBoard) throws Exception {
+	
+	@RequestMapping("addmusicboardpro")
+	public String addMusicBoardPro(MusicBoard musicBoard) throws Exception {
 		String userEmail = (String) session.getAttribute("userEmail");
 		musicBoard.setUserEmail(userEmail);
-		musicBoard.setBdType("a");
+		if(musicBoard.getUrl() == null || musicBoard.getUrl()=="") {
+			musicBoard.setUrl("notLiveBoard");
+			musicBoard.setVideoId("notLiveBoard");
+		}else {
+			musicBoard.setVideoId(musicBoard.getUrl().split("v=")[1].split("&")[0]);
+		}
+		if(musicBoard.getBdType().equals("l")) {
+			musicBoard.setArtist("LiveBoard");
+		}else if (musicBoard.getBdType().equals("m")) {
+			musicBoard.setArtist("MusicVideo");
+		}
 		System.out.println(musicBoard);
 		int num = bd.addMusicBoard(musicBoard);
 		return "redirect:/";
 	}
-
-	///////////////////////////////////// SINGLE BOARD/////////////////////////////
-
-	@RequestMapping("singleboardpost")
-	public String singleBoardPost(int no) throws Exception {
-		int num = bd.readCountUp(no);
-		MusicBoard sbOne = bd.singleBoardOne(no);
-		request.setAttribute("sbOne", sbOne);
-		return "singleBoardPost";
-	}
-
-	@RequestMapping("addsingleboard")
-	public String addSingleBoard() throws Exception {
-		return "addSingleBoard";
-	}
-
-	@RequestMapping("addsingleboardpro")
-	public String addSingleBoardPro(MusicBoard musicBoard) throws Exception {
-		String userEmail = (String) session.getAttribute("userEmail");
-		musicBoard.setUserEmail(userEmail);
-		musicBoard.setBdType("s");
-		System.out.println(musicBoard);
-		int num = bd.addMusicBoard(musicBoard);
-		System.out.println(num);
-		return "redirect:/";
-	}
+	
+	
 
 	/////////////////////////////////////
 	@RequestMapping("getsingletitle")
@@ -111,9 +95,9 @@ public class BoardController {
 	@RequestMapping("addsingletitle")
 	@ResponseBody
 	public void addSingleTitle(SingleTitle singleTitle) throws Exception {
-		System.out.println(singleTitle);
+		System.out.println("ㄹㄹㄹㄹ"+singleTitle);
 		String url = singleTitle.getURL();
-		String videoId = url.substring(32);
+		String videoId = url.split("v=")[1].split("&")[0];
 		singleTitle.setVideoId(videoId);
 		if (url != null && url != "") {
 			int num = bd.addSingleTittle(singleTitle);
