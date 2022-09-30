@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import model.MusicBoard;
+import model.Pageing;
 import model.Reply;
 import model.SingleTitle;
 import service.BoardDao;
@@ -34,10 +35,17 @@ public class BoardController {
 		this.m = m;
 		this.session = request.getSession();
 	}
+
 	@RequestMapping("musicboard")
-	public String musicBoard(String bdType) throws Exception {
-		List<MusicBoard> mbList = bd.musicBoardList(bdType);
+	public String musicBoard(String bdType, int nowPage) throws Exception {
+		int boardCount = bd.boardCount(bdType);
+		Pageing pg = new Pageing(nowPage, boardCount);
+		List<MusicBoard> mbList = bd.musicBoardList(bdType, nowPage, pg.getLimit());
 		request.setAttribute("mbList", mbList);
+		request.setAttribute("bottomline", pg.getBottomLine());
+		request.setAttribute("startPg", pg.getStartPg());
+		request.setAttribute("endPg", pg.getEndPg());
+		request.setAttribute("maxPg", pg.getMaxPg());
 		return "musicBoard";
 	}
 	
@@ -162,9 +170,20 @@ public class BoardController {
 	
 	@RequestMapping("replylist")
 	@ResponseBody
-	public List<Reply> replyList(String boardNo, String type) throws Exception{
-		List<Reply> reList = bd.replyList(boardNo, type);
+	public List<Reply> replyList(String boardNo, String type, int nowPage) throws Exception{
+		int reCount = bd.countReply(boardNo);
+		System.out.println("d: "+nowPage);
+		Pageing pg = new Pageing(nowPage, reCount);
+		List<Reply> reList = bd.replyList(boardNo, type,nowPage, pg.getLimit());
 		return reList;
+	}
+	
+	@RequestMapping("replypageing")
+	@ResponseBody
+	public Pageing replyPageing(String boardNo, int nowPage) throws Exception{
+		int reCount = bd.countReply(boardNo);
+		Pageing pg = new Pageing(nowPage, reCount);
+		return pg;
 	}
 	
 	@RequestMapping("updatereply")

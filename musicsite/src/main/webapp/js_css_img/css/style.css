@@ -15,12 +15,23 @@ header {
 	z-index: 20;
 	/* 생략 */
 }
+a {
+  text-decoration: none;
+  color: inherit;
+}
 
 .outer {
 	
 }
 
 .container {
+	
+}
+.conainer-index{
+	margin: 0 auto;
+	width: 1400px;
+	border-width: 10px;
+
 	
 }
 
@@ -43,6 +54,10 @@ header {
 	margin: 15px
 }
 
+.hasMarg2 {
+	margin: 25px
+}
+
 .button {
 	margin: 15px
 }
@@ -60,6 +75,10 @@ header {
 	margin: 10px
 }
 
+.indexVideo{
+	margin-left: 10px;
+	margin-top: 10px
+}
 .ytVideo {
 	z-index: 20;
 	position: fixed;

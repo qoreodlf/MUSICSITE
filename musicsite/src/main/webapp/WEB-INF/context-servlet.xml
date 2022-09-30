@@ -22,8 +22,16 @@
 	<!-- css,js,html 웹에서 제공되는 파일의 기본 기능 제외 -->
 	<mvc:default-servlet-handler />
 
-	<mvc:view-controller path="/index"
-		view-name="index" />
+	<!--<mvc:view-controller path="/index" view-name="index" /> -->
+
+	<mvc:interceptors>
+		<mvc:interceptor> <!-- 인터셉터 -->
+			<mvc:mapping path="/board/addmusicboard" />
+			<mvc:mapping path="/user/mypage" />
+
+			<bean class="interceptor.LoginInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors>
 
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">

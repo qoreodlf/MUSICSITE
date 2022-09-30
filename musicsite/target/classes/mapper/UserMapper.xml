@@ -4,10 +4,63 @@
 <mapper namespace="user">
 
 	<insert id="adduser" parameterType="user">
-		insert into userinfo (useremail, userpass, usernickname) values (#{userEmail},#{userPass},#{userNickname})
+		insert into userinfo
+		(useremail, userpass, usernickname) values
+		(#{userEmail},#{userPass},#{userNickname})
 	</insert>
 
-	<select id="selectuserone" parameterType="string" resultType="user">
+	<select id="selectuserone" parameterType="string"
+		resultType="user">
 		select * from userinfo where useremail = #{value}
+	</select>
+
+
+	<!-- 유저가 작성한 보드 -->
+	<select id="usersmusicboard" resultType="mboard"
+		parameterType="map">
+		select * from (select rownum ronum, a.* from (select
+		to_char(m.boarddate,'yyyy/mm/dd') as datechange, m.*, u.usernickname
+		from userinfo u, musicboard m where m.useremail
+		= u.useremail and
+		bdtype = #{bdType}
+		and m.useremail = #{userEmail}
+		order by m.boarddate
+		desc)a) where ronum BETWEEN #{start} and #{end}
+	</select>
+
+	<!-- 유저가 작성한 보드 카운트 -->
+	<select id="userboardcount" resultType="int"
+		parameterType="string">
+		select
+		COUNT(*) from userinfo u, musicboard m where
+		m.useremail
+		= u.useremail and bdtype = #{bdType}
+		and m.useremail =
+		#{userEmail}
+	</select>
+
+
+
+	<!-- 유저가 좋아요 누른 보드 -->
+	<select id="userslikemusicboard" resultType="mboard"
+		parameterType="map">
+		select * from (select rownum ronum, a.* from (
+		select m.*, u.usernickname from userinfo u, musicboard m, boardlike l
+		where
+		m.useremail =
+		u.useremail and m.no = l.boardno and bdtype =
+		#{bdType}
+		and
+		l.useremail = #{userEmail} order by m.boarddate desc)a)
+		where ronum BETWEEN #{start} and #{end}
+	</select>
+
+	<!-- 유저가 좋아요 누른 보드 카운트 -->
+	<select id="userlikeboardcount" resultType="int"
+		parameterType="string">
+		select
+		COUNT(*) from userinfo u, musicboard m, boardlike l where m.useremail
+		= u.useremail and m.no = l.boardno and bdtype = #{bdType}
+		and m.useremail = #{userEmail}
 	</select>
 </mapper>

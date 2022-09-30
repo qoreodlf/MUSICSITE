@@ -2,9 +2,10 @@ package test;
 
 public class tetst {
 	public static void main(String[] args) {
-		String url = "https://www.youtube.com/watch?v=oDnTaVFQGN4";
-		String minuspart = "https://www.youtube.com/watch?v=";
-		String id = url.substring(31);
-		System.out.println(id);
+		int nowPage = 3;
+		int limit = 10;
+		System.out.println((nowPage-1)*limit +1);
+		System.out.println(nowPage*limit);
+		
 	}
 }

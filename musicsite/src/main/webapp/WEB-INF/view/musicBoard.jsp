@@ -17,11 +17,17 @@
 		<c:if test="${param.bdType eq 'a'}">
 			<h3>앨범 게시판</h3>
 		</c:if>
+		<c:if test="${param.bdType eq 'l'}">
+			<h3>라이브 게시판</h3>
+		</c:if>
+		<c:if test="${param.bdType eq 'm'}">
+			<h3>뮤직비디오 게시판</h3>
+		</c:if>
 		<table class="table table-hover">
 			<thead>
 				<tr>
 					<th scope="col" style="width: 60%">제목</th>
-					<th scope="col">작성일</th>
+					<th scope="col">작성자</th>
 					<th scope="col">조회수</th>
 					<th scope="col">추천</th>
 					<th scope="col" style="width: 15%">작성날짜</th>
@@ -34,11 +40,10 @@
 							href="${pageContext.request.contextPath}/board/musicboardpost?no=${i.no}">
 								<c:if test="${param.bdType eq 's' || param.bdType eq 'a'}">
 							${i.artist} - ${i.title}
-								</c:if> <c:if test="${param.bdType eq 'l'}">
+								</c:if> <c:if test="${param.bdType eq 'l' || param.bdType eq 'm'}">
 								${i.title}
 								</c:if>
-						</a>
-						</th>
+						</a></td>
 						<td>${i.userNickname}</td>
 						<td>${i.readcnt}</td>
 						<td>${i.recocnt}</td>
@@ -50,6 +55,29 @@
 
 			</tbody>
 		</table>
+		<nav aria-label="Page navigation example">
+			<ul class="pagination justify-content-center">
+				<c:if test="${startPg>bottomline}">
+					<li class="page-item"><a class="page-link"
+						href="${pageContext.request.contextPath}/board/musicboard?bdType=${param.bdType}&nowPage=${startPg-bottomline}"
+						aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+					</a></li>
+				</c:if>
+				<c:forEach var="i" begin="${startPg}" end="${endPg}">
+					<li class="page-item"><a class="page-link"
+						<c:if test="${param.nowPage eq i}">
+      style="background: #d2d2d2"
+      </c:if>
+						href="${pageContext.request.contextPath}/board/musicboard?bdType=${param.bdType}&nowPage=${i}">${i}</a></li>
+				</c:forEach>
+				<c:if test="${endPg<maxPg}">
+					<li class="page-item"><a class="page-link"
+						href="${pageContext.request.contextPath}/board/musicboard?bdType=${param.bdType}&nowPage=${startPg+bottomline}"
+						aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+					</a></li>
+				</c:if>
+			</ul>
+		</nav>
 		<div class="hasMarg">
 			<c:if test="${param.bdType eq 's'}">
 				<button class="btn btn-light rightButton" id="likeButton"

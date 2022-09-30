@@ -26,12 +26,17 @@ public class BoardDao {
 	
 	
 	public int addMusicBoard(MusicBoard musicBoard) {
+		
 		int num = session.insert(ns+"addmusicboard", musicBoard);
 		return num;
 	}
 	
-	public List<MusicBoard> musicBoardList(String bdType) {
-		List<MusicBoard> mbList = session.selectList(ns+"musicboardlist", bdType);
+	public List<MusicBoard> musicBoardList(String bdType,int nowPage, int limit) {
+		map.clear();
+		map.put("bdType", bdType);
+		map.put("start", (nowPage - 1) * limit + 1);
+		map.put("end", (nowPage * limit));
+		List<MusicBoard> mbList = session.selectList(ns+"musicboardlist", map);
 		return mbList;
 	}
 	
@@ -39,6 +44,20 @@ public class BoardDao {
 		MusicBoard selectedMB = session.selectOne(ns+"musicboardone", no);
 		return selectedMB;
 	}
+	
+	public List<MusicBoard> musicBoardListRecocnt(String bdType) {
+		List<MusicBoard> mbList = session.selectList(ns+"musicboardlistrecocnt", bdType);
+		return mbList;
+	}
+	
+	
+	public int boardCount(String bdType) {
+		int num = session.selectOne(ns+"boardcount", bdType);
+		return num;
+	}
+	
+
+	
 
 	
 	
@@ -139,10 +158,12 @@ public class BoardDao {
 		return num;
 	}
 	
-	public List<Reply> replyList(String boardNo, String type) {
+	public List<Reply> replyList(String boardNo, String type,int nowPage, int limit) {
 		map.clear();
 		map.put("boardNo", boardNo);
 		map.put("type", type);
+		map.put("start", (nowPage - 1) * limit + 1);
+		map.put("end", (nowPage * limit));
 		List<Reply> replylist = session.selectList(ns+"replylist", map);
 		return replylist;
 	}

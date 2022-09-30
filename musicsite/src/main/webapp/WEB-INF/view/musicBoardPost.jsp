@@ -20,10 +20,10 @@
 		<c:if test="${mbOne.bdType eq 'a'}">
 			<h3>앨범 게시판</h3>
 		</c:if>
-		<c:if test="${mbOne.bdType eq 'ㅣ'}">
+		<c:if test="${mbOne.bdType eq 'l'}">
 			<h3>라이브 게시판</h3>
 		</c:if>
-		<c:if test="${mbOne.bdType eq 'a'}">
+		<c:if test="${mbOne.bdType eq 'm'}">
 			<h3>뮤직비디오 게시판</h3>
 		</c:if>
 		<table class="table table-striped table-hover">
@@ -97,6 +97,10 @@
 		<div>
 			<div id="countReply" style="text-align: right;"></div>
 			<div class="list-group hasMarg" id="replyList"></div>
+			<nav aria-label="Page navigation example">
+				<ul class="pagination justify-content-center" id="replyPageing">
+				</ul>
+			</nav>
 		</div>
 		<form id=replyForm>
 			<div class="mb-3 hasMarg">
@@ -137,12 +141,12 @@
 		window.onload = loadAlbum()
 	} else if ("${mbOne.bdType}" == 's') {
 		window.onload = loadSingle()
-	} else if ("${mbOne.bdType}" == 'l') {
+	} else if ("${mbOne.bdType}" == 'l' || "${mbOne.bdType}" == 'm') {
 		window.onload = loadLiveVideo()
 	}
 
 	window.onload = countLike()
 	window.onload = countReply()
-	window.onload = replyList()
+	window.onload = replyList('1')
 </script> </content>
 </html>

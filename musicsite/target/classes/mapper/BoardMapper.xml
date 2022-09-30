@@ -4,33 +4,62 @@
 <mapper namespace="board">
 
 	<insert id="addmusicboard" parameterType="mboard">
-		insert into musicboard values 
+		insert into musicboard
+		values
 		(abseq.nextval, #{userEmail},#{title},#{artist},
-		 sysdate, #{bdType}, 0, 0, #{bdText}, #{url}, #{videoId})
+		sysdate,
+		#{bdType}, 0, 0, #{bdText}, #{url}, #{videoId})
 	</insert>
-	
-	<select id="musicboardlist" resultType="mboard" parameterType="string">
-		select * from userinfo u, musicboard m where m.useremail = u.useremail and bdtype = #{value} order by m.boarddate desc
+
+	<select id="musicboardlist" resultType="mboard"
+		parameterType="map">
+		select * from (select rownum ronum, a.* from (select
+		m.*,
+		u.usernickname from userinfo u, musicboard m
+		where m.useremail =
+		u.useremail and m.bdtype = #{bdType} order by m.boarddate
+		desc)a)
+		where
+		ronum BETWEEN #{start} and #{end}
 	</select>
-	
-	<select id="musicboardone" parameterType="int" resultType="mboard">
-		select * from userinfo u, musicboard m where m.useremail = u.useremail
+
+	<select id="musicboardone" parameterType="int"
+		resultType="mboard">
+		select * from userinfo u, musicboard m where m.useremail =
+		u.useremail
 		and no = #{value}
 	</select>
-	
-	
-	
-	
-	<!--///////////////////////////////////////////////////////////////////////////////////////  -->
-	<select id="selectsingle" parameterType="stitle" resultType="stitle">
-		select * from singletitle where artist=#{artist} and title=#{title}
+
+	<select id="musicboardlistrecocnt" resultType="mboard"
+		parameterType="string">
+		select * from userinfo u, musicboard m where m.useremail
+		= u.useremail and bdtype = #{value}
+		order by m.recocnt desc
 	</select>
+
+
 	
+	<select id="boardcount" resultType="int" parameterType="string">
+		select
+		COUNT(*) from musicboard where bdtype = #{value}
+	</select>
+
+
+
+
+	<!--/////////////////////////////////////////////////////////////////////////////////////// -->
+	<select id="selectsingle" parameterType="stitle"
+		resultType="stitle">
+		select * from singletitle where artist=#{artist} and
+		title=#{title}
+	</select>
+
 	<insert id="addsingletitle" parameterType="stitle">
-		insert into singletitle values (#{artist}, #{title}, #{URL}, #{videoId})
+		insert into
+		singletitle values (#{artist}, #{title}, #{URL}, #{videoId})
 	</insert>
-	
-	<!--///////////////////////////게시물 추천기능//////////////////////  -->
+
+	<!--///////////////////////////게시물 추천기능////////////////////// -->
 	<!-- 게시글 추천 수 업 -->
 	<update id="updateLike" parameterType="int">
 		update musicboard set
@@ -39,14 +68,17 @@
 
 	<!-- 게시글 추천 취소 -->
 	<update id="updateLikeCancel" parameterType="int">
-		update musicboard set
+		update musicboard
+		set
 		recocnt = recocnt-1 where no = #{value}
 	</update>
 
 	<!-- 게시글 추천 시 boardlike 테이블에 insert -->
 	<insert id="insertLike">
-		insert into boardlike(LIKENO , boardno , useremail, likedate)
-		values((SELECT NVL(MAX(likeno), 0) + 1 FROM boardlike) ,#{boardNo}
+		insert into boardlike(LIKENO , boardno , useremail,
+		likedate)
+		values((SELECT NVL(MAX(likeno), 0) + 1 FROM boardlike)
+		,#{boardNo}
 		,#{userEmail}, sysdate)
 	</insert>
 
@@ -73,54 +105,60 @@
 	<!-- 게시글 추천 중복방지 select문 -->
 	<select id="likeCheck" resultType="int" parameterType="map">
 		select
-		count(*) from boardlike where boardno = #{boardNo} and useremail = #{userEmail}
+		count(*) from boardlike where boardno = #{boardNo} and useremail =
+		#{userEmail}
 	</select>
-	
+
 	<!-- 게시글 추천 수 -->
 	<select id="countlike" resultType="int" parameterType="int">
 		select
 		recocnt from musicboard where no = #{value}
 	</select>
-	
-	
-	<!--////////////////////////////조회수  -->
+
+
+	<!--////////////////////////////조회수 -->
 	<!-- 조회수 증가 -->
 	<update id="readcountup" parameterType="int">
 		update musicboard set
 		readcnt = readcnt + 1 where no = #{value}
 	</update>
-	
+
 	<!-- /////////////////////////////////댓글//////////////////////// -->
-	<!-- 댓글 추가  -->
+	<!-- 댓글 추가 -->
 	<insert id="addreply" parameterType="reply">
 		insert into reply
 		values
 		(#{boardNo}, reseq.nextval, #{userEmail}, #{reText}, sysdate, #{type})
 	</insert>
-	
+
 	<!-- 댓글 수정 -->
 	<update id="updatereply" parameterType="map">
-		update reply set retext = #{reText} where reno = #{reNo}
+		update reply set retext =
+		#{reText} where reno = #{reNo}
 	</update>
-	
+
 	<!-- 댓글 삭제 -->
 	<delete id="deletereply" parameterType="string">
-		delete from reply where reno = #{value}
+		delete from reply where
+		reno = #{value}
 	</delete>
-	
+
 	<!-- 댓글 가져오기 -->
-	<select id="replylist" resultType="reply"
-		parameterType="map">
-		select to_char(redate,'yyyy/mm/dd') as redate, boardno, reno, retext, r.useremail, type, usernickname
-		from reply r, userinfo u where boardNo = #{boardNo} and type=#{type} and r.userEmail= u.userEmail order by r.redate desc
+	<select id="replylist" resultType="reply" parameterType="map">
+		select * from (select rownum ronum, a.* from (select
+		to_char(redate,'yyyy/mm/dd') as redate, boardno, reno, retext,
+		r.useremail, type, usernickname
+		from reply r, userinfo u where boardNo
+		= #{boardNo} and type=#{type} and r.userEmail= u.userEmail order by
+		r.redate desc)a) where ronum between #{start} and #{end}
 	</select>
-	
+
 	<!-- 댓글 수 -->
 	<select id="countreply" resultType="int" parameterType="string">
 		select
 		count(*) from reply where boardNo = #{value}
 	</select>
-	
-	
-	
+
+
+
 </mapper>

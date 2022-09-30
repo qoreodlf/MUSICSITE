@@ -31,17 +31,18 @@
 					<li><a href="${pageContext.request.contextPath}/"
 						class="nav-link px-2 text-secondary">Home</a></li>
 					<li><a
-						href="${pageContext.request.contextPath}/board/musicboard?bdType=a"
+						href="${pageContext.request.contextPath}/board/musicboard?bdType=a&nowPage=1"
 						class="nav-link px-2 text-white">앨범 게시판</a></li>
 					<li><a
-						href="${pageContext.request.contextPath}/board/musicboard?bdType=s"
+						href="${pageContext.request.contextPath}/board/musicboard?bdType=s&nowPage=1"
 						class="nav-link px-2 text-white">싱글 게시판</a></li>
 					<li><a
-						href="${pageContext.request.contextPath}/board/musicboard?bdType=l"
+						href="${pageContext.request.contextPath}/board/musicboard?bdType=l&nowPage=1"
 						class="nav-link px-2 text-white">라이브 게시판</a></li>
 					<li><a
-						href="${pageContext.request.contextPath}/board/musicboard?bdType=m"
+						href="${pageContext.request.contextPath}/board/musicboard?bdType=m&nowPage=1"
 						class="nav-link px-2 text-white">뮤직비디오 게시판</a></li>
+
 				</ul>
 
 				<form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
@@ -58,7 +59,10 @@
 							onclick="location.href='${pageContext.request.contextPath}/user/join'">Sign-up</button>
 					</c:if>
 					<c:if test="${sessionScope.userEmail ne null }">
-						<a>${sessionScope.userNickname}</a> &nbsp;&nbsp;
+						<a href="${pageContext.request.contextPath}/user/mypage">My
+							page(${sessionScope.userNickname})</a> &nbsp;&nbsp;
+							<a href="${pageContext.request.contextPath}/user/mypagetest">My
+							page(${sessionScope.userNickname}test)</a>
 						<button type="button" class="btn btn-warning"
 							onclick="location.href='${pageContext.request.contextPath}/user/logout'">Logout</button>
 					</c:if>

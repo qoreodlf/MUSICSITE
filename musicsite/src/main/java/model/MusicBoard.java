@@ -22,6 +22,7 @@ public class MusicBoard {
 	String bdText;
 	String url;
 	String videoId;
+	String datechange;
 	
 	
 }

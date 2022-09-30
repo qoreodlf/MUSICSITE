@@ -12,34 +12,6 @@ function hms(seconds) {
 	return result
 }
 
-/*function ytlink(artist, tittle) {
-	var artist = artist
-	var tittle = tittle
-
-	console.log(artist + tittle)
-
-	var key = "AIzaSyDStbHDY024iw1mo_R8g_0VzESgNQIkWUU"
-	var part = 'snippet'
-	var maxResults = 10
-	var q = artist + " " + tittle
-	var type = "video"
-	var videoCategoryId = 10
-	var videoLicense = "youtube"
-	var url = "https://www.googleapis.com/youtube/v3/search?key=" + key + "&part=" + part + "&maxResults=" + maxResults
-		+ "&q=" + q + "&type=" + type + "&videoCategoryId" + videoCategoryId + "&videoLicense" + videoLicense
-	var zzz = ""
-	fetch(url)
-		.then(res => res.json())
-		.then(json => json.items[0].id.videoId)
-		.then(id => "https://www.youtube.com/watch?v=" + id)
-		.then(youtubeURL => {
-			console.log(youtubeURL)
-	//zzz=youtubeURL
-		})
-
-	
-}
-*/
 function loadAlbum() {
 
 	fetch(" http://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=469da4f274a34075dac01550dd5e5ad3&artist=" + artist + "&album=" + title + "&format=json")
@@ -258,7 +230,7 @@ function nextmusic() {
 		nowindex += 1
 		makeplayer(nowindex)
 	} else {
-		alert("마지막 곡입니다")
+
 	}
 }
 
@@ -293,12 +265,28 @@ function loadLiveVideo() {
 			width: '640',
 			videoId: videoId,
 			events: {
-				
+
 				'onStateChange': onPlayerStateChange
 			}
 		})
 	})
 }
+
+function loadIndexVideo(divname, videoId, i) {
+	document.getElementById(divname).innerHTML = '<div id="liveplayer' + i + '"></div>';
+	window.YT.ready(function() {
+		player = new YT.Player('liveplayer' + i, {
+			height: '360',
+			width: '600',
+			videoId: videoId,
+			events: {
+
+				'onStateChange': onPlayerStateChange
+			}
+		})
+	})
+}
+
 function onPlayerStateChange(event) {
 	if (event.data == YT.PlayerState.ENDED) {
 		nextmusic()
@@ -357,14 +345,15 @@ function addReply() {
 	}
 	var url = getContextPath() + "/board/addreply?boardNo=" + boardNo + "&userEmail=" + userEmail + "&reText=" + reText + "&type=" + boardType
 	fetch(url).then(res => {
-		replyList()
+		replyList('1')
 		countReply()
 		document.getElementById("replyText").value = ""
 	})
 }
 //댓글리스트	
-function replyList() {
-	var url = getContextPath() + "/board/replylist?boardNo=" + boardNo + "&type=" + boardType
+function replyList(nowPage) {
+	var url = getContextPath() + "/board/replylist?boardNo=" + boardNo + "&type=" + boardType + "&nowPage=" + nowPage
+	var pgurl = getContextPath() + "/board/replypageing?boardNo=" + boardNo + "&nowPage=" + nowPage
 	fetch(url)
 		.then(res => res.json())
 		.then(json => {
@@ -385,6 +374,33 @@ function replyList() {
 				a += '<small>&nbsp;</small><pre>' + json[i].reText + '</pre></li>'
 			}
 			document.getElementById("replyList").innerHTML = a
+		})
+
+	fetch(pgurl)
+		.then(res => res.json())
+		.then(json => {
+			console.log(json)
+			var a = ''
+			if (json.startPg > json.bottomLine) {
+				a += '<li class="page-item">'
+				a += '<a class="page-link" href="javascript:void(0);"'
+				a += 'onclick="replyList(' + (json.startPg - json.bottomLine) + ');"aria-label="Previous">'
+				a += '<span aria-hidden="true">&laquo;</span></a></li>'
+			}
+			for (var i = json.startPg; i <= json.endPg; i++) {
+				a += '<li class="page-item"><a class="page-link"'
+				if (nowPage == i) {
+					a += 'style="background: #d2d2d2"'
+				}
+				a += 'href="javascript:void(0);" onclick="replyList(' + i + ')">' + i + '</a></li>'
+			}
+			if (json.endPg < json.maxPg) {
+				a += '<li class="page-item">'
+				a += '<a class="page-link" href="javascript:void(0);"'
+				a += 'onclick="replyList(' + (json.startPg + json.bottomLine) + ');"aria-label="Next">'
+				a += '<span aria-hidden="true">&raquo;</span></a></li>'
+			}
+			document.getElementById("replyPageing").innerHTML = a
 		})
 }
 
@@ -423,7 +439,7 @@ function newreText(reNo) {
 			if (text == 1) {
 				alert("댓글이 수정되었습니다.")
 			}
-			replyList()
+			replyList('1')
 			countReply()
 		})
 }
@@ -436,7 +452,7 @@ function deleteReply(reNo) {
 			if (text == 1) {
 				alert("댓글이 삭제되었습니다.")
 			}
-			replyList()
+			replyList('1')
 			countReply()
 		})
 }
@@ -447,5 +463,109 @@ function countReply() {
 		.then(res => res.text())
 		.then(text => {
 			document.getElementById("countReply").innerHTML = "댓글 : " + text + " 개"
+		})
+}
+
+function myBoard(bdType, nowPage) {
+	var url = getContextPath() + "/user/myboard?bdType=" + bdType + "&nowPage=" + nowPage
+	var urlpg = getContextPath() + "/user/myboardpageing?bdType=" + bdType + "&nowPage=" + nowPage
+	fetch(url)
+		.then(res => res.json())
+		.then(json => {
+			console.log(json)
+			var a = ''
+			for (var i = 0; i < json.length; i++) {
+				a += '<tr><td><a href="' + getContextPath() + '/board/musicboardpost?no=' + json[i].no + '">'
+				if (bdType == 'a' || bdType == 's') {
+					a += json[i].artist + ' - ' + json[i].title
+				}
+				if (bdType == 'l' || bdType == 'm') {
+					a += json[i].title
+				}
+				a += '</a></td>'
+				a += '<td>' + json[i].readcnt + '</td>'
+				a += '<td>' + json[i].recocnt + '</td>'
+				a += '<td>' + json[i].datechange + '</td></tr>'
+
+			}
+			document.getElementById("myBoard").innerHTML = a
+		})
+	fetch(urlpg)
+		.then(res => res.json())
+		.then(json => {
+			console.log(json)
+			var a = ''
+			if (json.startPg > json.bottomLine) {
+				a += '<li class="page-item">'
+				a += '<a class="page-link" href="javascript:void(0);"'
+				a += 'onclick="myBoard(\'' + bdType + '\',' + (json.startPg - json.bottomLine) + ');"aria-label="Previous">'
+				a += '<span aria-hidden="true">&laquo;</span></a></li>'
+			}
+			for (var i = json.startPg; i <= json.endPg; i++) {
+				a += '<li class="page-item"><a class="page-link"'
+				if (nowPage == i) {
+					a += 'style="background: #d2d2d2"'
+				}
+				a += 'href="javascript:void(0);" onclick="myBoard(\'' + bdType + '\',' + i + ')">' + i + '</a></li>'
+			}
+			if (json.endPg < json.maxPg) {
+				a += '<li class="page-item">'
+				a += '<a class="page-link" href="javascript:void(0);"'
+				a += 'onclick="myBoard(\'' + bdType + '\'",' + (json.startPg + json.bottomLine) + ');"aria-label="Next">'
+				a += '<span aria-hidden="true">&raquo;</span></a></li>'
+			}
+			document.getElementById("myboardPageing").innerHTML = a
+		})
+}
+
+function myLikeBoard(bdType, nowPage){
+	var url = getContextPath() + "/user/mylikeboard?bdType=" + bdType + "&nowPage=" + nowPage
+	var urlpg = getContextPath() + "/user/mylikeboardpageing?bdType=" + bdType + "&nowPage=" + nowPage
+	fetch(url)
+		.then(res => res.json())
+		.then(json => {
+			console.log(json)
+			var a = ''
+			for (var i = 0; i < json.length; i++) {
+				a += '<tr><td><a href="' + getContextPath() + '/board/musicboardpost?no=' + json[i].no + '">'
+				if (bdType == 'a' || bdType == 's') {
+					a += json[i].artist + ' - ' + json[i].title
+				}
+				if (bdType == 'l' || bdType == 'm') {
+					a += json[i].title
+				}
+				a += '</a></td>'
+				a += '<td>' + json[i].readcnt + '</td>'
+				a += '<td>' + json[i].recocnt + '</td>'
+				a += '<td>' + json[i].userNickname + '</td></tr>'
+
+			}
+			document.getElementById("myLikeBoard").innerHTML = a
+		})
+	fetch(urlpg)
+		.then(res => res.json())
+		.then(json => {
+			console.log(json)
+			var a = ''
+			if (json.startPg > json.bottomLine) {
+				a += '<li class="page-item">'
+				a += '<a class="page-link" href="javascript:void(0);"'
+				a += 'onclick="myBoard(\'' + bdType + '\',' + (json.startPg - json.bottomLine) + ');"aria-label="Previous">'
+				a += '<span aria-hidden="true">&laquo;</span></a></li>'
+			}
+			for (var i = json.startPg; i <= json.endPg; i++) {
+				a += '<li class="page-item"><a class="page-link"'
+				if (nowPage == i) {
+					a += 'style="background: #d2d2d2"'
+				}
+				a += 'href="javascript:void(0);" onclick="myBoard(\'' + bdType + '\',' + i + ')">' + i + '</a></li>'
+			}
+			if (json.endPg < json.maxPg) {
+				a += '<li class="page-item">'
+				a += '<a class="page-link" href="javascript:void(0);"'
+				a += 'onclick="myBoard(\'' + bdType + '\'",' + (json.startPg + json.bottomLine) + ');"aria-label="Next">'
+				a += '<span aria-hidden="true">&raquo;</span></a></li>'
+			}
+			document.getElementById("mylikeboardPageing").innerHTML = a
 		})
 }
