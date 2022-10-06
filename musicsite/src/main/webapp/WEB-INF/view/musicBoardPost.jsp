@@ -130,7 +130,7 @@
 	var player //youtube iframe 만들어지는 변수
 	var nowindex //var playList에서 현재 재생중인 인덱스
 
-	var userEmail = "${sessionScope.userEmail}"
+	var userEmail = "${sessionScope.loginUser.userEmail}"
 	var boardNo = "${mbOne.no}"
 
 	var boardType = "mb"

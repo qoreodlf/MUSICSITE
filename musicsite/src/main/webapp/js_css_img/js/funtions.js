@@ -43,14 +43,16 @@ function loadAlbum() {
 				a += '<input type="hidden" id="videoId' + i + '">'
 				a += '</li>';
 
-				(function(i) {
-					getSingleTitle(artist, title, i)
-				})(i)
-
-
-
+				getSingleTitle(artist, title, i)
 			}
 			document.getElementById("tracklist").innerHTML = a
+
+			playList.sort((a, b) => {
+				if (a.i < b.i) return -1;
+				if (a.i > b.i) return 1;
+
+				return 0;
+			});
 		})
 }
 
@@ -195,9 +197,9 @@ function getContextPath() {
 };
 
 
-async function getSingleTitle(artist, title, i = "") {
+function getSingleTitle(artist, title, i = "") {
 	var url = getContextPath() + '/board/getsingletitle?artist=' + artist + '&title=' + title
-	await fetch(url).then(res => res.json())
+	fetch(url).then(res => res.json())
 		.then(json => {
 			console.log(json)
 			document.getElementById("videoId" + i).value = json.videoId
@@ -206,6 +208,7 @@ async function getSingleTitle(artist, title, i = "") {
 				document.getElementById("playButton" + i).innerHTML = a
 
 				var trackinfo = {
+					i: i,
 					videoId: json.videoId,
 					artist: json.artist,
 					title: json.title
@@ -518,7 +521,7 @@ function myBoard(bdType, nowPage) {
 		})
 }
 
-function myLikeBoard(bdType, nowPage){
+function myLikeBoard(bdType, nowPage) {
 	var url = getContextPath() + "/user/mylikeboard?bdType=" + bdType + "&nowPage=" + nowPage
 	var urlpg = getContextPath() + "/user/mylikeboardpageing?bdType=" + bdType + "&nowPage=" + nowPage
 	fetch(url)
@@ -550,7 +553,7 @@ function myLikeBoard(bdType, nowPage){
 			if (json.startPg > json.bottomLine) {
 				a += '<li class="page-item">'
 				a += '<a class="page-link" href="javascript:void(0);"'
-				a += 'onclick="myBoard(\'' + bdType + '\',' + (json.startPg - json.bottomLine) + ');"aria-label="Previous">'
+				a += 'onclick="myLikeBoard(\'' + bdType + '\',' + (json.startPg - json.bottomLine) + ');"aria-label="Previous">'
 				a += '<span aria-hidden="true">&laquo;</span></a></li>'
 			}
 			for (var i = json.startPg; i <= json.endPg; i++) {
@@ -558,12 +561,12 @@ function myLikeBoard(bdType, nowPage){
 				if (nowPage == i) {
 					a += 'style="background: #d2d2d2"'
 				}
-				a += 'href="javascript:void(0);" onclick="myBoard(\'' + bdType + '\',' + i + ')">' + i + '</a></li>'
+				a += 'href="javascript:void(0);" onclick="myLikeBoard(\'' + bdType + '\',' + i + ')">' + i + '</a></li>'
 			}
 			if (json.endPg < json.maxPg) {
 				a += '<li class="page-item">'
 				a += '<a class="page-link" href="javascript:void(0);"'
-				a += 'onclick="myBoard(\'' + bdType + '\'",' + (json.startPg + json.bottomLine) + ');"aria-label="Next">'
+				a += 'onclick="myLikeBoard(\'' + bdType + '\'",' + (json.startPg + json.bottomLine) + ');"aria-label="Next">'
 				a += '<span aria-hidden="true">&raquo;</span></a></li>'
 			}
 			document.getElementById("mylikeboardPageing").innerHTML = a

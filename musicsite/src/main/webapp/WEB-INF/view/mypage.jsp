@@ -14,7 +14,7 @@
 		<div class="row" style="margin: 10px">
 			<div class="container-main">
 				<div class="row">
-					<h3>${userinfo.userNickname}<span class="badge bg-secondary">Lv.</span>
+					<h3>${loginUser.userNickname}<span class="badge bg-secondary">Lv.</span>
 					</h3>
 				</div>
 			</div>

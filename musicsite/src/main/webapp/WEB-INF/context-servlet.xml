@@ -28,6 +28,7 @@
 		<mvc:interceptor> <!-- 인터셉터 -->
 			<mvc:mapping path="/board/addmusicboard" />
 			<mvc:mapping path="/user/mypage" />
+			<!-- <mvc:mapping path="/user/login" /> -->
 
 			<bean class="interceptor.LoginInterceptor" />
 		</mvc:interceptor>

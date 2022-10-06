@@ -68,8 +68,7 @@ public class UserController {
 		User selectedUser = ud.selectUserOne(user.getUserEmail());
 		if (selectedUser != null) {
 			if (selectedUser.getUserPass().equals(user.getUserPass())) {
-				session.setAttribute("userEmail", selectedUser.getUserEmail());
-				session.setAttribute("userNickname", selectedUser.getUserNickname());
+				session.setAttribute("loginUser", selectedUser);
 			}
 		}
 		return "redirect:/";
@@ -81,54 +80,63 @@ public class UserController {
 		return "redirect:/";
 	}
 
-
 	@RequestMapping("mypage")
 	public String mypagetest() throws Exception {
-		String userEmail = (String) session.getAttribute("userEmail");
-		User userinfo = ud.selectUserOne(userEmail);
-		request.setAttribute("userinfo", userinfo);
+
+		/*
+		 * String userEmail = (String) session.getAttribute("userEmail"); User userinfo
+		 * = ud.selectUserOne(userEmail); request.setAttribute("userinfo", userinfo);
+		 */
+
 		return "mypage";
 	}
 
 	@RequestMapping("myboard")
 	@ResponseBody
-	public List<MusicBoard> myBoard(String bdType,int nowPage) throws Exception{
-		String userEmail = (String) session.getAttribute("userEmail");
+	public List<MusicBoard> myBoard(String bdType, int nowPage) throws Exception {
+		//String userEmail = (String) session.getAttribute("userEmail");
+		User loginUser = (User) session.getAttribute("loginUser");
+		String userEmail = loginUser.getUserEmail();
 		int count = ud.userBoardCount(bdType, userEmail);
 		Pageing pg = new Pageing(nowPage, count);
 		List<MusicBoard> myBoardList = ud.usersMusicBoard(bdType, userEmail, nowPage, pg.getLimit());
 		return myBoardList;
 	}
-	
+
 	@RequestMapping("myboardpageing")
 	@ResponseBody
-	public Pageing myBoardPageing(String bdType, int nowPage) throws Exception{
-		String userEmail = (String) session.getAttribute("userEmail");
+	public Pageing myBoardPageing(String bdType, int nowPage) throws Exception {
+		//String userEmail = (String) session.getAttribute("userEmail");
+		User loginUser = (User) session.getAttribute("loginUser");
+		String userEmail = loginUser.getUserEmail();
 		int count = ud.userBoardCount(bdType, userEmail);
 		Pageing pg = new Pageing(nowPage, count);
 		return pg;
 	}
-	
+
 	@RequestMapping("mylikeboard")
 	@ResponseBody
-	public List<MusicBoard> myLikeBoard(String bdType,int nowPage) throws Exception{
-		System.out.println(bdType+",,"+nowPage);
-		String userEmail = (String) session.getAttribute("userEmail");
+	public List<MusicBoard> myLikeBoard(String bdType, int nowPage) throws Exception {
+		System.out.println(bdType + ",," + nowPage);
+		//String userEmail = (String) session.getAttribute("userEmail");
+		User loginUser = (User) session.getAttribute("loginUser");
+		String userEmail = loginUser.getUserEmail();
 		int count = ud.userLikeBoardCount(bdType, userEmail);
 		Pageing pg = new Pageing(nowPage, count);
 		List<MusicBoard> myBoardList = ud.usersLikeMusicBoard(bdType, userEmail, nowPage, pg.getLimit());
 		return myBoardList;
 	}
-	
+
 	@RequestMapping("mylikeboardpageing")
 	@ResponseBody
-	public Pageing myLikeBoardPageing(String bdType, int nowPage) throws Exception{
-		System.out.println(bdType+"//"+nowPage);
-		String userEmail = (String) session.getAttribute("userEmail");
+	public Pageing myLikeBoardPageing(String bdType, int nowPage) throws Exception {
+		System.out.println(bdType + "//" + nowPage);
+		//String userEmail = (String) session.getAttribute("userEmail");
+		User loginUser = (User) session.getAttribute("loginUser");
+		String userEmail = loginUser.getUserEmail();
 		int count = ud.userLikeBoardCount(bdType, userEmail);
 		Pageing pg = new Pageing(nowPage, count);
 		return pg;
 	}
-	
-	
+
 }

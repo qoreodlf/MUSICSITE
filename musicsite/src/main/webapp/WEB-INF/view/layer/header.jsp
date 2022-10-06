@@ -25,7 +25,6 @@
 						aria-label="Bootstrap">
 						<use xlink:href="#bootstrap"></use></svg>
 				</a>
-
 				<ul
 					class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
 					<li><a href="${pageContext.request.contextPath}/"
@@ -52,17 +51,15 @@
 				</form>
 
 				<div class="text-end">
-					<c:if test="${sessionScope.userEmail eq null }">
+					<c:if test="${sessionScope.loginUser eq null }">
 						<button type="button" class="btn btn-outline-light me-2"
 							onclick="location.href='${pageContext.request.contextPath}/user/login'">Login</button>
 						<button type="button" class="btn btn-warning"
 							onclick="location.href='${pageContext.request.contextPath}/user/join'">Sign-up</button>
 					</c:if>
-					<c:if test="${sessionScope.userEmail ne null }">
+					<c:if test="${sessionScope.loginUser ne null }">
 						<a href="${pageContext.request.contextPath}/user/mypage">My
-							page(${sessionScope.userNickname})</a> &nbsp;&nbsp;
-							<a href="${pageContext.request.contextPath}/user/mypagetest">My
-							page(${sessionScope.userNickname}test)</a>
+							page(${sessionScope.loginUser.userNickname})</a> &nbsp;&nbsp;
 						<button type="button" class="btn btn-warning"
 							onclick="location.href='${pageContext.request.contextPath}/user/logout'">Logout</button>
 					</c:if>

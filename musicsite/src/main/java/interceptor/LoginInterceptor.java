@@ -6,13 +6,15 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import model.User;
+
 public class LoginInterceptor extends HandlerInterceptorAdapter {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		HttpSession session = request.getSession();
-		String auth = (String) session.getAttribute("userEmail");
+		User auth =  (User) session.getAttribute("loginUser");
 		
 		if (auth==null) {
 			response.sendRedirect(request.getContextPath()+"/user/login");

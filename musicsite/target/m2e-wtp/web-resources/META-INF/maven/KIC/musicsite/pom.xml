@@ -13,6 +13,7 @@
 		<spring.version1>5.3.18</spring.version1>
 		<spring.version2>5.2.19.RELEASE</spring.version2>
 		<spring.version3>4.3.30.RELEASE</spring.version3>
+		<spring.version4>4.3.18.RELEASE</spring.version4>
 
 		<org.apache.tiles-version>3.0.3</org.apache.tiles-version>
 	</properties>
@@ -41,17 +42,17 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
-			<version>${spring.version1}</version>
+			<version>${spring.version4}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
-			<version>${spring.version1}</version>
+			<version>${spring.version4}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>${spring.version1}</version>
+			<version>${spring.version4}</version>
 		</dependency>
 
 		<!-- Lombok-->
@@ -66,7 +67,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
-			<version>${spring.version1}</version>
+			<version>${spring.version4}</version>
 		</dependency>
 		<dependency>
 			<groupId>oracle</groupId>
@@ -74,6 +75,36 @@
 			<version>11</version>
 		</dependency>
 
+ 		
+		<!-- Spring Security-->
+
+		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-core -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>4.2.3.RELEASE</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-web -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>4.2.3.RELEASE</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-config -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>4.2.3.RELEASE</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-taglibs -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-taglibs</artifactId>
+			<version>4.2.3.RELEASE</version>
+		</dependency> 
+		
+		
+		
 		<!-- jstl 설정-->
 		<dependency>
 			<groupId>jstl</groupId>
