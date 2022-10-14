@@ -93,7 +93,12 @@
 		</div>
 		<div class="container" style="text-align: center">
 			<button class="btn btn-light" id="likeButton" onclick="like()">추천</button>
+			<c:if test="${mbOne.userEmail eq loginUser.userEmail }">
+				<button class="btn btn-light" id="likeButton"
+					onclick="deleteBoard()">삭제</button>
+			</c:if>
 		</div>
+
 		<div>
 			<div id="countReply" style="text-align: right;"></div>
 			<div class="list-group hasMarg" id="replyList"></div>
@@ -106,7 +111,9 @@
 			<div class="mb-3 hasMarg">
 				<label for="exampleFormControlTextarea1" class="form-label">댓글
 					작성</label>
-				<textarea class="form-control" id="replyText" rows="3"></textarea>
+				<textarea class="form-control" id="replyText" rows="3"
+					onkeyup="limitLength(this,100,'count1')"></textarea>
+				<div id="count1"></div>
 			</div>
 			<div class="mb-3 hasMarg">
 				<button type="button" class="btn btn-light rightButton" id=""
@@ -114,7 +121,12 @@
 			</div>
 
 		</form>
-
+		<form id="deleteForm"
+			action="${pageContext.request.contextPath}/board/deleteboard"
+			method="post">
+			<input type="hidden" name="no" value="${mbOne.no}"> <input
+				type="hidden" name="bdType" value="${mbOne.bdType}">
+		</form>
 	</div>
 
 	<input type="hidden" id="playingVideoId">
@@ -148,5 +160,14 @@
 	window.onload = countLike()
 	window.onload = countReply()
 	window.onload = replyList('1')
+
+	function deleteBoard() {
+		//var url = "${pageContext.request.contextPath}/board/deleteboard?no="+boardNo+"&bdType="+boardType
+		if (confirm("정말 삭제하시겠습니까??") == true) {
+			document.getElementById("deleteForm").submit()
+		} else { //취소
+			return;
+		}
+	}
 </script> </content>
 </html>

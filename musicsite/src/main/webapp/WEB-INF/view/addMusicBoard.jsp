@@ -82,7 +82,8 @@
 								for="exampleFormControlInput1" class="form-label"><h4>음악
 									소개</h4></label>
 							<textarea class="form-control" id="replyText" rows="3"
-								name="bdText"></textarea>
+								name="bdText" onkeyup="limitLength(this,100,'count1')"></textarea>
+								<div id="count1"></div>
 							<button class="btn btn-secondary rightButton" type="button"
 								onclick="addSingleTitle()">등록</button>
 						</form>
@@ -92,7 +93,7 @@
 		</c:if>
 		<c:if test="${param.bdType eq 'l' || param.bdType eq 'm'}">
 			<div class="row">
-				<form
+				<form id="addMusicPro"
 					action="${pageContext.request.contextPath}/board/addmusicboardpro">
 					<label for="exampleDataList" class="form-label"> <c:if
 							test="${param.bdType eq 'l'}">
@@ -126,7 +127,7 @@
 							<textarea class="form-control" id="replyText" rows="3"
 								name="bdText"></textarea>
 							<input type="hidden" name="bdType" value="${param.bdType}">
-							<button class="btn btn-secondary rightButton" type="submit">등록</button>
+							<button class="btn btn-secondary rightButton" type="button" onclick="addLiveMVBoard()">등록</button>
 						</div>
 
 					</div>

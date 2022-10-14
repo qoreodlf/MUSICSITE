@@ -25,9 +25,14 @@ public class BoardDao {
 	private Map<String, Object> map = new HashMap<String, Object>();
 	
 	
-	public int addMusicBoard(MusicBoard musicBoard) {
-		
+	public int addMusicBoard(MusicBoard musicBoard) {	
 		int num = session.insert(ns+"addmusicboard", musicBoard);
+		return num;
+	}
+	
+	//보드 삭제
+	public int deleteMusicboard(int no) {
+		int num = session.delete(ns+"deletemusicboard",no);
 		return num;
 	}
 	
@@ -56,6 +61,25 @@ public class BoardDao {
 		return num;
 	}
 	
+	public MusicBoard getRandomBoard(String bdType) {
+		MusicBoard selectedMB = session.selectOne(ns+"getrandomboard", bdType);
+		return selectedMB;
+	}
+	
+	public int clearRandomMB() {
+		int num = session.delete(ns+"clearrandommb");
+		return num;
+	}
+	
+	public int addRandomMB(MusicBoard musicBoard) {
+		int num = session.insert(ns+"addrandommb", musicBoard);
+		return num;
+	}
+	
+	public String randomMBOne(String bdType) {
+		String videoId = session.selectOne(ns+"randommbone",bdType);
+		return videoId;
+	}
 
 	
 

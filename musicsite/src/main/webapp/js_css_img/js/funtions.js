@@ -92,7 +92,7 @@ function hasURL(artist, title, i = "") {
 		.then(result => {
 			if (result == 0) {
 				var a = '<form id="' + i + '" action="${pageContext.request.contextPath}/board/addsingletitle">'
-				a += '<input type="text" class="form-control" id="URL' + i + '" placeholder="youtube URL">'
+				a += '<input type="text" maxlength="200" class="form-control" id="URL' + i + '" placeholder="youtube URL">'
 				a += '<input type = "hidden" id="artist' + i + '" value="' + artist + '">'
 				a += '<input type = "hidden" id="title' + i + '" value="' + title + '"></form>'
 				document.getElementById("urldiv" + i).innerHTML = a
@@ -178,6 +178,9 @@ function searchAlbum() {
 }
 
 function addSingleTitle() {
+	if(document.getElementById("addArtist").value == "" || document.getElementById("addArtist").value == null){
+		return
+	}
 	for (var i = 0; i < numTrack; i++) {
 		if (document.getElementById("artist" + i) !== null) {
 			var artist = document.getElementById("artist" + i).value
@@ -190,6 +193,13 @@ function addSingleTitle() {
 	document.getElementById("addMusicPro").submit();
 }
 
+function addLiveMVBoard(){
+	if(document.getElementById("liveplayer" ) === null){
+		alert("영상을 등록해주세요")
+		return
+	}
+	document.getElementById("addMusicPro").submit();
+}
 
 function getContextPath() {
 	var hostIndex = location.href.indexOf(location.host) + location.host.length;
@@ -335,6 +345,20 @@ function countLike() {
 }
 
 
+//textarea 글자수 제한
+function limitLength(area, maxLength,countdiv){
+	var text= area.value
+	var count = document.getElementById(countdiv)
+	count.innerHTML = text.length+"/"+maxLength
+	if(text.length>maxLength){
+		alert(maxLength+"자 까지만 작성 가능합니다")
+		text = text.substr(0, maxLength)
+		area.value = text
+		area.focus()
+	}
+}
+
+
 //댓글달기
 function addReply() {
 	var reText = document.getElementById("replyText").value.replace(/(?:\r\n|\r|\n)/g, "<br />")
@@ -407,7 +431,7 @@ function replyList(nowPage) {
 		})
 }
 
-//댓글수정
+//댓글수정창
 function updateReply(reNo) {
 	console.log('ddddd')
 	if (modaldiv !== null) {
@@ -419,7 +443,8 @@ function updateReply(reNo) {
 	a += '<div class="modal-dialog"><div class="modal-content">'
 	a += '<div class="modal-header"><h5 class="modal-title" id="exampleModalLabel">댓글 수정</h5>'
 	a += '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>'
-	a += '<div class="modal-body"><textarea class="form-control" id="newreText" rows="3"></textarea></div>'
+	a += '<div class="modal-body"><textarea class="form-control" id="newreText" rows="3" onkeyup="limitLength(this,100,\'count2\')"></textarea>'
+	a += '<div id="count2"></div></div>'
 	a += '  <div class="modal-footer">'
 	a += '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>'
 	a += '<button type="button" class="btn btn-primary" onclick="newreText(' + reNo + ')" data-bs-dismiss="modal" >수정</button>'
@@ -433,6 +458,7 @@ function updateReply(reNo) {
 	modal.show()
 }
 
+//댓글수정
 function newreText(reNo) {
 	var reText = document.getElementById('newreText').value.replace(/(?:\r\n|\r|\n)/g, "<br />")
 	var url = getContextPath() + "/board/updatereply?reNo=" + reNo + "&reText=" + reText

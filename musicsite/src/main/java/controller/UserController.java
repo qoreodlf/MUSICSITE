@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -38,6 +39,8 @@ public class UserController {
 		this.m = m;
 		this.session = request.getSession();
 	}
+	
+	
 
 	@RequestMapping("join")
 	public String join() throws Exception {
@@ -56,6 +59,29 @@ public class UserController {
 		}
 
 		return "redirect:/user/login";
+	}
+	
+	@RequestMapping("checkhasemail")
+	@ResponseBody
+	public int checkHasEmail(String userEmail) throws Exception{
+		User selectedUser = ud.selectUserOne(userEmail);
+		if (selectedUser == null) {
+			return 0;
+		} else {
+			return 1;
+		}
+	}
+	
+	@RequestMapping("checkhasnickname")
+	@ResponseBody
+	public int checkHasNickname(String userNickname) throws Exception{
+		User selectedUser = ud.selectUserOneByNickname(userNickname);
+		System.out.println(selectedUser);
+		if (selectedUser == null) {
+			return 0;
+		} else {
+			return 1;
+		}
 	}
 
 	@RequestMapping("login")
@@ -138,5 +164,73 @@ public class UserController {
 		Pageing pg = new Pageing(nowPage, count);
 		return pg;
 	}
-
+	
+	
+	//////////////////////////////회원정보변경///////////////////////
+	
+	@RequestMapping("checkpass")
+	@ResponseBody
+	public int checkPass(String userPass) throws Exception{
+		User loginUser = (User) session.getAttribute("loginUser");
+		String userEmail = loginUser.getUserEmail();
+		User selectedUser = ud.selectUserOne(userEmail);
+		
+		if(selectedUser.getUserPass().equals(userPass)) {
+			return 0; //비밀번호 일치하면 0 리턴
+		}else {
+			return 1; //비밀번호 틀리면 1 리턴
+		}
+	}
+	
+	@RequestMapping("updatenickname")
+	public String updateNickname() throws Exception{
+		return "updateNickname";
+	}
+	
+	//닉네임변경
+	@RequestMapping("updatenicknamepro")
+	public String updateNicknamePro(String userNickname) throws Exception{
+		User loginUser = (User) session.getAttribute("loginUser");
+		String userEmail = loginUser.getUserEmail();
+		ud.updateNickname(userNickname, userEmail);
+		
+		User selectedUser = ud.selectUserOne(userEmail);
+		session.setAttribute("loginUser", selectedUser);
+		return "redirect:/user/mypage";
+	}
+	
+	@RequestMapping("updatepass")
+	public String updatePass() throws Exception{
+		return "updatePass";
+	}
+	
+	
+	//비밀번호 변경
+	@RequestMapping("updatepasspro")
+	public String updatePassPro(String newPass1) throws Exception{
+		User loginUser = (User) session.getAttribute("loginUser");
+		String userEmail = loginUser.getUserEmail();
+		ud.updatePass(newPass1, userEmail);
+		
+		User selectedUser = ud.selectUserOne(userEmail);
+		session.setAttribute("loginUser", selectedUser);
+		return "redirect:/user/mypage";
+	}
+	
+	@RequestMapping("deleteuser")
+	public String deleteUser() throws Exception{
+		return "deleteUser";
+	}
+	
+	//회원탈퇴
+	@RequestMapping("deleteuserpro")
+	public String deleteUserPro(String userPass) throws Exception{
+		User loginUser = (User) session.getAttribute("loginUser");
+		String userEmail = loginUser.getUserEmail();
+		ud.deleteUser(userEmail);
+		
+		session.invalidate();
+		return "redirect:/";
+		
+	}
 }

@@ -16,6 +16,7 @@ import model.MusicBoard;
 import model.Pageing;
 import model.Reply;
 import model.SingleTitle;
+import model.User;
 import service.BoardDao;
 
 @Controller
@@ -64,7 +65,8 @@ public class BoardController {
 	
 	@RequestMapping("addmusicboardpro")
 	public String addMusicBoardPro(MusicBoard musicBoard) throws Exception {
-		String userEmail = (String) session.getAttribute("userEmail");
+		User loginUser = (User) session.getAttribute("loginUser");
+		String userEmail = loginUser.getUserEmail();
 		musicBoard.setUserEmail(userEmail);
 		if(musicBoard.getUrl() == null || musicBoard.getUrl()=="") {
 			musicBoard.setUrl("notLiveBoard");
@@ -80,6 +82,14 @@ public class BoardController {
 		System.out.println(musicBoard);
 		int num = bd.addMusicBoard(musicBoard);
 		return "redirect:/";
+	}
+	
+	@RequestMapping("deleteboard")
+	public String deleteBoard(int no, String bdType) throws Exception{
+		int num = bd.deleteMusicboard(no);
+		System.out.println(bdType+no);
+		return "redirect:/board/musicboard?bdType="+bdType+"&nowPage=1";
+		
 	}
 	
 	

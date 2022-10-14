@@ -119,8 +119,8 @@
 <content tag="local_script"> <script type="text/javascript"
 	src="${pageContext.request.contextPath}/js_css_img/js/funtions.js"></script>
 <script type="text/javascript">
-	var todayLive = "o_nxIQTM_B0"
-	var todayMV = "Jh4QFaPmdss"
+	var todayLive = "${liveVideoId}"
+	var todayMV = "${MBVideoId}"
 
 	window.onload = loadIndexVideo("toLive", todayLive, 1)
 	window.onload = loadIndexVideo("toMV", todayMV, 2)

@@ -10,6 +10,10 @@
 		sysdate,
 		#{bdType}, 0, 0, #{bdText}, #{url}, #{videoId})
 	</insert>
+	
+	<delete id="deletemusicboard" parameterType="int">
+		delete from musicboard where no = #{value}
+	</delete>
 
 	<select id="musicboardlist" resultType="mboard"
 		parameterType="map">
@@ -38,12 +42,36 @@
 	</select>
 
 
-	
+
 	<select id="boardcount" resultType="int" parameterType="string">
 		select
 		COUNT(*) from musicboard where bdtype = #{value}
 	</select>
 
+
+	<!-- ///////////////////////////////////////////////// -->
+	<!-- mb에서 랜덤으로 한개 select -->
+	<select id="getrandomboard" resultType="mboard"
+		parameterType="string">
+		select * from (select * from musicboard where
+		bdtype=#{value} order by
+		dbms_random.random()) where rownum &lt;= 1
+	</select>
+
+	<!-- 자정마다 randommb 비우기 -->
+	<delete id="clearrandommb">
+		delete from randommb
+	</delete>
+
+	<!-- 자정마다 randommb에 추가 -->
+	<insert id="addrandommb" parameterType="mboard">
+		insert into randommb
+		values (#{videoId}, #{bdType})
+	</insert>
+	
+	<select id="randommbone" parameterType="string" resultType="string">
+		select videoid from randommb where bdtype = #{value}
+	</select>
 
 
 
@@ -145,7 +173,8 @@
 
 	<!-- 댓글 가져오기 -->
 	<select id="replylist" resultType="reply" parameterType="map">
-		select * from (select rownum ronum, a.* from (select
+		select *
+		from (select rownum ronum, a.* from (select
 		to_char(redate,'yyyy/mm/dd') as redate, boardno, reno, retext,
 		r.useremail, type, usernickname
 		from reply r, userinfo u where boardNo

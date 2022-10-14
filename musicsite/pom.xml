@@ -55,6 +55,22 @@
 			<version>${spring.version4}</version>
 		</dependency>
 
+
+		<!-- mail library -->
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4.7</version>
+		</dependency>
+
+		<!-- mail 서포트 -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${spring.version4}</version>
+		</dependency>
+
+
 		<!-- Lombok-->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -75,7 +91,7 @@
 			<version>11</version>
 		</dependency>
 
- 		
+
 		<!-- Spring Security-->
 
 		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-core -->
@@ -101,10 +117,9 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-taglibs</artifactId>
 			<version>4.2.3.RELEASE</version>
-		</dependency> 
-		
-		
-		
+		</dependency>
+
+
 		<!-- jstl 설정-->
 		<dependency>
 			<groupId>jstl</groupId>

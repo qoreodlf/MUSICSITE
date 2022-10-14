@@ -17,6 +17,23 @@
 					<h3>${loginUser.userNickname}<span class="badge bg-secondary">Lv.</span>
 					</h3>
 				</div>
+				<div class="row">
+					<table>
+						<thead>
+							<tr>
+								<th scope="col"><a
+									href="${pageContext.request.contextPath}/user/updatenickname">닉네임
+										변경</a></th>
+								<th scope="col"><a
+									href="${pageContext.request.contextPath}/user/updatepass">비밀번호
+										변경</a></th>
+								<th scope="col"><a
+									href="${pageContext.request.contextPath}/user/deleteuser">회원탈퇴</a></th>
+							</tr>
+						</thead>
+					</table>
+
+				</div>
 			</div>
 
 
@@ -75,7 +92,8 @@
 								</tbody>
 							</table>
 							<nav aria-label="Page navigation example">
-								<ul class="pagination justify-content-center" id="myboardPageing">
+								<ul class="pagination justify-content-center"
+									id="myboardPageing">
 								</ul>
 							</nav>
 						</div>
@@ -94,8 +112,8 @@
 					<ul class="nav nav-tabs" id="myTab" role="tablist">
 						<li class="nav-item" role="presentation">
 							<button class="nav-link active" id="home-tab"
-								data-bs-toggle="tab" data-bs-target="#" type="button"
-								role="tab" aria-controls="home-tab-pane" aria-selected="true"
+								data-bs-toggle="tab" data-bs-target="#" type="button" role="tab"
+								aria-controls="home-tab-pane" aria-selected="true"
 								onclick="myLikeBoard('a','1')">앨범</button>
 						</li>
 						<li class="nav-item" role="presentation">
@@ -131,15 +149,16 @@
 									</tr>
 								</thead>
 								<tbody class="table-group-divider" id="myLikeBoard">
-									
+
 								</tbody>
 							</table>
 							<nav aria-label="Page navigation example">
-								<ul class="pagination justify-content-center" id="mylikeboardPageing">
+								<ul class="pagination justify-content-center"
+									id="mylikeboardPageing">
 								</ul>
 							</nav>
 						</div>
-						
+
 					</div>
 
 				</div>

@@ -14,7 +14,7 @@
 	href="${pageContext.request.contextPath}/js_css_img/css/style.css">
 </head>
 <body>
-	login
+	
 	<div class="container-loginout m-auto">
 		<form action="${pageContext.request.contextPath}/user/loginpro"
 			method="post">
@@ -24,14 +24,15 @@
 
 			<div class="form-floating">
 				<input type="text" class="form-control" id="floatingInput"
-					placeholder="name@example.com" name="userEmail"> <label
-					for="floatingInput">Email address</label>
+					placeholder="name@example.com" name="userEmail" maxlength="40"> <label
+					for="floatingInput" >Email address</label>
 			</div>
 			<div class="form-floating">
 				<input type="password" class="form-control" id="floatingPassword"
-					placeholder="Password" name="userPass"> <label
+					placeholder="Password" name="userPass" maxlength="10"> <label
 					for="floatingPassword">Password</label>
 			</div>
+			
 
 			<div class="checkbox mb-3">
 				<label> <input type="checkbox" value="remember-me">
