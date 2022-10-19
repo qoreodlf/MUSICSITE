@@ -37,6 +37,7 @@ public class BoardController {
 		this.session = request.getSession();
 	}
 
+	//보드타입에 따른 리스트+페이징
 	@RequestMapping("musicboard")
 	public String musicBoard(String bdType, int nowPage) throws Exception {
 		int boardCount = bd.boardCount(bdType);
@@ -50,6 +51,7 @@ public class BoardController {
 		return "musicBoard";
 	}
 	
+	//게시글페이지
 	@RequestMapping("musicboardpost")
 	public String musicBoardPost(int no) throws Exception {
 		int num = bd.readCountUp(no);
@@ -58,11 +60,13 @@ public class BoardController {
 		return "musicBoardPost";
 	}
 	
+	//게시글작성페이지
 	@RequestMapping("addmusicboard")
 	public String addmusicBoard() throws Exception {
 		return "addMusicBoard";
 	}
 	
+	//게시글작성
 	@RequestMapping("addmusicboardpro")
 	public String addMusicBoardPro(MusicBoard musicBoard) throws Exception {
 		User loginUser = (User) session.getAttribute("loginUser");
@@ -72,6 +76,7 @@ public class BoardController {
 			musicBoard.setUrl("notLiveBoard");
 			musicBoard.setVideoId("notLiveBoard");
 		}else {
+			//유튜브 url에서 videoID 만 자르기
 			musicBoard.setVideoId(musicBoard.getUrl().split("v=")[1].split("&")[0]);
 		}
 		if(musicBoard.getBdType().equals("l")) {
@@ -79,15 +84,14 @@ public class BoardController {
 		}else if (musicBoard.getBdType().equals("m")) {
 			musicBoard.setArtist("MusicVideo");
 		}
-		System.out.println(musicBoard);
 		int num = bd.addMusicBoard(musicBoard);
 		return "redirect:/";
 	}
 	
+	//게시글 삭제
 	@RequestMapping("deleteboard")
 	public String deleteBoard(int no, String bdType) throws Exception{
 		int num = bd.deleteMusicboard(no);
-		System.out.println(bdType+no);
 		return "redirect:/board/musicboard?bdType="+bdType+"&nowPage=1";
 		
 	}
@@ -95,11 +99,13 @@ public class BoardController {
 	
 
 	/////////////////////////////////////
+	//싱글타이틀 가져오기
 	@RequestMapping("getsingletitle")
 	@ResponseBody
 	public SingleTitle getSingleTitle(SingleTitle singleTitle) throws Exception {
 		SingleTitle selectedSingle = bd.selectSingle(singleTitle);
-		System.out.println(selectedSingle);
+		
+		//싱글타이틀에 있으면 selectedSingle, 없으면 nullSingleTitle 리턴
 		if (selectedSingle == null) {
 			SingleTitle nullSingleTitle = new SingleTitle();
 			nullSingleTitle.setArtist(null);
@@ -110,29 +116,29 @@ public class BoardController {
 		return selectedSingle;
 	}
 
+	//싱글타이틀 추가
 	@RequestMapping("addsingletitle")
 	@ResponseBody
 	public void addSingleTitle(SingleTitle singleTitle) throws Exception {
-		System.out.println("ㄹㄹㄹㄹ"+singleTitle);
 		String url = singleTitle.getURL();
-		String videoId = url.split("v=")[1].split("&")[0];
+		String videoId = url.split("v=")[1].split("&")[0];  //유튜브 url에서 videoID 만 자르기
 		singleTitle.setVideoId(videoId);
+		
+		//유알엘 있는것만 추가
 		if (url != null && url != "") {
 			int num = bd.addSingleTittle(singleTitle);
-			System.out.println(num);
 		}
 	}
 
+	//싱글테이블에 추가된 트랙인지 확인
 	@RequestMapping("hasurl")
 	@ResponseBody
 	public int hasURL(SingleTitle singleTitle) throws Exception {
-		System.out.println(singleTitle);
 		SingleTitle selectedSingle = bd.selectSingle(singleTitle);
+		
 		if (selectedSingle == null) {
-			System.out.println(selectedSingle);
 			return 0;
 		} else {
-			System.out.println(selectedSingle);
 			return 1;
 		}
 	}
@@ -151,17 +157,12 @@ public class BoardController {
 	@ResponseBody
 	@RequestMapping("updatelike")
 	public int updateLike(int boardNo, String userEmail) throws Exception {
-		System.out.println(boardNo + userEmail);
-		System.out.println("userid=" + userEmail);
 		int likeCheck = bd.likeCheck(boardNo, userEmail); // 해당개시물을 좋아요 눌렀는지
-		System.out.println("likecheck:" + likeCheck);
 
 		if (likeCheck == 0) {
 			bd.insertLike(boardNo, userEmail);
 			bd.updateLike(boardNo);
-			bd.updateLikeCheck(boardNo, userEmail);
 		} else if (likeCheck == 1) {
-			bd.updateLikeCheckCancel(boardNo, userEmail);
 			bd.updateLikeCancel(boardNo);
 			bd.deleteLike(boardNo, userEmail);
 		}
@@ -170,24 +171,25 @@ public class BoardController {
 	}
 	
 	///////////////////////////댓글기능/////////////////
+	//댓글달기
 	@RequestMapping("addreply")
 	@ResponseBody
 	public int addReply(Reply reply) throws Exception{
-		System.out.println(reply);
 		int num = bd.addReply(reply);
 		return num;
 	}
 	
+	//게시글별 댓글 리스트
 	@RequestMapping("replylist")
 	@ResponseBody
 	public List<Reply> replyList(String boardNo, String type, int nowPage) throws Exception{
 		int reCount = bd.countReply(boardNo);
-		System.out.println("d: "+nowPage);
 		Pageing pg = new Pageing(nowPage, reCount);
 		List<Reply> reList = bd.replyList(boardNo, type,nowPage, pg.getLimit());
 		return reList;
 	}
 	
+	//댓글 페이징
 	@RequestMapping("replypageing")
 	@ResponseBody
 	public Pageing replyPageing(String boardNo, int nowPage) throws Exception{
@@ -196,15 +198,15 @@ public class BoardController {
 		return pg;
 	}
 	
+	//댓글수정
 	@RequestMapping("updatereply")
 	@ResponseBody
 	public int updateReply(String reNo, String reText) throws Exception{
-		System.out.println(reNo+reText);
 		int num = bd.updateReply(reNo, reText);
-		System.out.println(num);
 		return num;
 	}
 	
+	//댓글삭제
 	@RequestMapping("deletereply")
 	@ResponseBody
 	public int deleteReply(String reNo) throws Exception{
@@ -212,6 +214,7 @@ public class BoardController {
 		return num;
 	}
 	
+	//댓글 수
 	@RequestMapping("countreply")
 	@ResponseBody
 	public int countReply(String boardNo) throws Exception{

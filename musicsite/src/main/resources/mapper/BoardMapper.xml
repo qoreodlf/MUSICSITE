@@ -116,20 +116,6 @@
 		useremail = #{userEmail}
 	</delete>
 
-	<!-- 게시글 추천 시 Check를 1로 만들어서 중복방지 -->
-	<update id="updateLikeCheck">
-		update boardlike set LIKECHECK = 1
-		where boardno =
-		#{boardNo} and useremail = #{userEmail}
-	</update>
-
-	<!-- 게시글 추천취소 시 다시 0 -->
-	<update id="updateLikeCheckCancel">
-		update boardlike set LIKECHECK = 0
-		where boardno =
-		#{boardNo} and useremail = #{userEmail}
-	</update>
-
 	<!-- 게시글 추천 중복방지 select문 -->
 	<select id="likeCheck" resultType="int" parameterType="map">
 		select

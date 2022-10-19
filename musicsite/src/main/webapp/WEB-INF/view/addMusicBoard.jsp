@@ -106,7 +106,7 @@
 					<div class="">
 						<div class="hasMarg row">
 							<h4>제목</h4>
-							<input class="form-control" placeholder="제목" name="title">
+							<input class="form-control" placeholder="제목" name="title" id="boardTitle" maxlength="50">
 						</div>
 						<br>
 						<hr>
@@ -125,7 +125,8 @@
 							<label for="exampleFormControlInput1" class="form-label"><h4>영상
 									소개</h4></label>
 							<textarea class="form-control" id="replyText" rows="3"
-								name="bdText"></textarea>
+								name="bdText" onkeyup="limitLength(this,100,'count1')"></textarea>
+								<div id="count1"></div>
 							<input type="hidden" name="bdType" value="${param.bdType}">
 							<button class="btn btn-secondary rightButton" type="button" onclick="addLiveMVBoard()">등록</button>
 						</div>

@@ -41,26 +41,26 @@ public class UserController {
 	}
 	
 	
-
+	//회원가입페이지
 	@RequestMapping("join")
 	public String join() throws Exception {
 		return "join";
 	}
-
+	
+	//회원가입
 	@RequestMapping("joinpro")
 	public String joinPro(User user) throws Exception {
 		User selectedUser = ud.selectUserOne(user.getUserEmail());
-		System.out.println(user);
-		System.out.println(selectedUser);
+
+		//선택된유저 없으면 유저추가
 		if (selectedUser == null) {
-			System.out.println(11132312);
 			int num = ud.addUser(user);
-			System.out.println(num);
 		}
 
 		return "redirect:/user/login";
 	}
 	
+	//이메일중복체크
 	@RequestMapping("checkhasemail")
 	@ResponseBody
 	public int checkHasEmail(String userEmail) throws Exception{
@@ -72,11 +72,11 @@ public class UserController {
 		}
 	}
 	
+	//닉네임 중복체크
 	@RequestMapping("checkhasnickname")
 	@ResponseBody
 	public int checkHasNickname(String userNickname) throws Exception{
 		User selectedUser = ud.selectUserOneByNickname(userNickname);
-		System.out.println(selectedUser);
 		if (selectedUser == null) {
 			return 0;
 		} else {
@@ -84,11 +84,13 @@ public class UserController {
 		}
 	}
 
+	//로그인페이지
 	@RequestMapping("login")
 	public String login() throws Exception {
 		return "login";
 	}
 
+	//로그인
 	@RequestMapping("loginpro")
 	public String loginPro(User user) throws Exception {
 		User selectedUser = ud.selectUserOne(user.getUserEmail());
@@ -100,12 +102,14 @@ public class UserController {
 		return "redirect:/";
 	}
 
+	//로그아웃
 	@RequestMapping("logout")
 	public String logout() throws Exception {
 		session.invalidate();
 		return "redirect:/";
 	}
 
+	//마이페이지
 	@RequestMapping("mypage")
 	public String mypagetest() throws Exception {
 
@@ -113,14 +117,15 @@ public class UserController {
 		 * String userEmail = (String) session.getAttribute("userEmail"); User userinfo
 		 * = ud.selectUserOne(userEmail); request.setAttribute("userinfo", userinfo);
 		 */
+		//jsp에서 AJAX로 처리
 
 		return "mypage";
 	}
 
+	//내가쓴게시글
 	@RequestMapping("myboard")
 	@ResponseBody
 	public List<MusicBoard> myBoard(String bdType, int nowPage) throws Exception {
-		//String userEmail = (String) session.getAttribute("userEmail");
 		User loginUser = (User) session.getAttribute("loginUser");
 		String userEmail = loginUser.getUserEmail();
 		int count = ud.userBoardCount(bdType, userEmail);
@@ -129,10 +134,11 @@ public class UserController {
 		return myBoardList;
 	}
 
+	//마이보드페이징
 	@RequestMapping("myboardpageing")
 	@ResponseBody
 	public Pageing myBoardPageing(String bdType, int nowPage) throws Exception {
-		//String userEmail = (String) session.getAttribute("userEmail");
+
 		User loginUser = (User) session.getAttribute("loginUser");
 		String userEmail = loginUser.getUserEmail();
 		int count = ud.userBoardCount(bdType, userEmail);
@@ -140,11 +146,10 @@ public class UserController {
 		return pg;
 	}
 
+	//내가 좋아요 누른 게시글
 	@RequestMapping("mylikeboard")
 	@ResponseBody
 	public List<MusicBoard> myLikeBoard(String bdType, int nowPage) throws Exception {
-		System.out.println(bdType + ",," + nowPage);
-		//String userEmail = (String) session.getAttribute("userEmail");
 		User loginUser = (User) session.getAttribute("loginUser");
 		String userEmail = loginUser.getUserEmail();
 		int count = ud.userLikeBoardCount(bdType, userEmail);
@@ -153,11 +158,10 @@ public class UserController {
 		return myBoardList;
 	}
 
+	//내가 좋아요 누른 게시글 페이징
 	@RequestMapping("mylikeboardpageing")
 	@ResponseBody
 	public Pageing myLikeBoardPageing(String bdType, int nowPage) throws Exception {
-		System.out.println(bdType + "//" + nowPage);
-		//String userEmail = (String) session.getAttribute("userEmail");
 		User loginUser = (User) session.getAttribute("loginUser");
 		String userEmail = loginUser.getUserEmail();
 		int count = ud.userLikeBoardCount(bdType, userEmail);

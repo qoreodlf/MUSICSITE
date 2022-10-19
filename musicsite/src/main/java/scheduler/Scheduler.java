@@ -12,9 +12,9 @@ public class Scheduler {
 	@Autowired
 	BoardDao bd;
 	
-	@Scheduled(fixedDelay=1000000000)
+	//00시마다 업데이트
+	@Scheduled(cron = "0 39 22 * * *")
 	public void setRnadomMBTable() {
-		System.out.println("delay 3000");
 		int clear = bd.clearRandomMB();
 		
 		//randomMB 테이블에 bdtype l 중 무작위 하나 추가

@@ -14,7 +14,7 @@ public class Pageing {
 	int limit = 5; //한 페이지당 게시글 수 
 	int maxPg;
 	
-	public Pageing(int nowPage, int boardCount){
+	public Pageing(int nowPage, int boardCount){ //boardCount : 해당 카테고리 보드, 댓글의 전체 수
 		this.maxPg = (boardCount / limit) + (boardCount % limit == 0 ? 0 : 1);
 		this.startPg = (nowPage-1)/bottomLine * bottomLine + 1;
 		this.endPg = startPg + bottomLine-1;

@@ -126,21 +126,6 @@ public class BoardDao {
 		return num;
 	}
 	
-	public int updateLikeCheck(int boardNo, String userEmail) {
-		map.clear();
-		map.put("boardNo", boardNo);
-		map.put("userEmail", userEmail);
-		int num = session.insert(ns+"updateLikeCheck", map);
-		return num;
-	}
-	
-	public int updateLikeCheckCancel(int boardNo, String userEmail) {
-		map.clear();
-		map.put("boardNo", boardNo);
-		map.put("userEmail", userEmail);
-		int num = session.insert(ns+"updateLikeCheckCancel", map);
-		return num;
-	}
 	
 	public int likeCheck(int boardNo, String userEmail) {
 		map.clear();

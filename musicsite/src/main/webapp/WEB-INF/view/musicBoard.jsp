@@ -79,7 +79,9 @@
 			</ul>
 		</nav>
 		<div class="hasMarg">
-			<c:if test="${param.bdType eq 's'}">
+		<button class="btn btn-light rightButton" id="likeButton"
+					onclick="location.href='${pageContext.request.contextPath}/board/addmusicboard?bdType=${param.bdType}'">글쓰기</button>
+			<%-- <c:if test="${param.bdType eq 's'}">
 				<button class="btn btn-light rightButton" id="likeButton"
 					onclick="location.href='${pageContext.request.contextPath}/board/addmusicboard?bdType=s'">글쓰기</button>
 			</c:if>
@@ -94,7 +96,7 @@
 			<c:if test="${param.bdType eq 'm'}">
 				<button class="btn btn-light rightButton" id="likeButton"
 					onclick="location.href='${pageContext.request.contextPath}/board/addmusicboard?bdType=m'">글쓰기</button>
-			</c:if>
+			</c:if> --%>
 		</div>
 
 	</div>

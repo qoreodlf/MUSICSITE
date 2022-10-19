@@ -1,3 +1,4 @@
+//트랙시간 변환하는 함수
 function hms(seconds) {
 	var h = parseInt(seconds / 3600);
 	var m = parseInt((seconds % 3600) / 60);
@@ -12,12 +13,11 @@ function hms(seconds) {
 	return result
 }
 
+//last.fm api로 앨범정보 가져오기
 function loadAlbum() {
-
 	fetch(" http://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=469da4f274a34075dac01550dd5e5ad3&artist=" + artist + "&album=" + title + "&format=json")
 		.then(res => res.json())
 		.then(json => {
-			console.log(json)
 			document.getElementById("artist").innerHTML = json.album.artist
 			document.getElementById("title").innerHTML = json.album.name
 
@@ -25,7 +25,7 @@ function loadAlbum() {
 			for (var i = 0; i < json.album.tracks.track.length; i++) {
 				albumtime += json.album.tracks.track[i].duration
 			}
-			console.log(hms(albumtime))
+			
 			document.getElementById("albumtime").innerHTML = hms(albumtime)
 			document.getElementById("albumImg").src = json.album.image[3]["#text"]
 
@@ -43,9 +43,11 @@ function loadAlbum() {
 				a += '<input type="hidden" id="videoId' + i + '">'
 				a += '</li>';
 
-				getSingleTitle(artist, title, i)
+
+				getSingleTitle(artist, title, i) //트랙 별 정보 DB에서 가져오기
 			}
 			document.getElementById("tracklist").innerHTML = a
+
 
 			playList.sort((a, b) => {
 				if (a.i < b.i) return -1;
@@ -56,12 +58,12 @@ function loadAlbum() {
 		})
 }
 
-function loadSingle() {
 
+//last.fm api로 싱글정보 가져오기
+function loadSingle() {
 	fetch(" http://ws.audioscrobbler.com/2.0/?method=track.getinfo&api_key=469da4f274a34075dac01550dd5e5ad3&artist=" + artist + "&track=" + title + "&format=json")
 		.then(res => res.json())
 		.then(json => {
-			console.log(json)
 			var artist = json.track.artist.name
 			var title = json.track.name
 			document.getElementById("artist").innerHTML = artist
@@ -79,12 +81,15 @@ function loadSingle() {
 			a += '<div class="playtime"><span class="badge bg-primary rounded-pill">' + time + '</span></div>'
 			a += '<input type="hidden" id="videoId">'
 			a += '</li>'
-			getSingleTitle(artist, title, "")
+			
+			getSingleTitle(artist, title, "") //DB에서 트랙정보 가져오기
 
 			document.getElementById("tracklist").innerHTML = a
 		})
 }
 
+//게시글 작성 시 해당 트랙의 유튜브URL 있는지 확인
+//없다면 url 삽입창 추가
 function hasURL(artist, title, i = "") {
 	var url = getContextPath() + '/board/hasurl?artist=' + artist + '&title=' + title
 	fetch(url)
@@ -100,6 +105,8 @@ function hasURL(artist, title, i = "") {
 		})
 
 }
+
+//싱글게시판 작성 시 last.fm api에서 트랙정보 검색
 function searchTrack() {
 	var artist = document.getElementById("sch_artist").value
 	var track = document.getElementById("sch_track").value
@@ -109,7 +116,6 @@ function searchTrack() {
 			if (json.message == "Track not found" || json.message == "Invalid parameters - Your request is missing a required parameter") {
 				alert("검색어를 확인해주세요")
 			}
-			console.log(json)
 			var artist = json.track.artist.name
 			var track = json.track.name
 
@@ -134,6 +140,7 @@ function searchTrack() {
 		})
 }
 
+//앨범게시판 작성 시 last.fm api에서 앨범정보 검색
 function searchAlbum() {
 	var artist = document.getElementById("sch_artist").value
 	var album = document.getElementById("sch_album").value
@@ -144,7 +151,6 @@ function searchAlbum() {
 				alert("검색어를 확인해주세요")
 				return
 			}
-			console.log(json)
 			document.getElementById("artist").innerHTML = json.album.artist
 			document.getElementById("title").innerHTML = json.album.name
 
@@ -155,7 +161,6 @@ function searchAlbum() {
 			for (var i = 0; i < json.album.tracks.track.length; i++) {
 				albumtime += json.album.tracks.track[i].duration
 			}
-			console.log(hms(albumtime))
 			document.getElementById("albumtime").innerHTML = hms(albumtime)
 			document.getElementById("albumImg").src = json.album.image[3]["#text"]
 
@@ -177,10 +182,17 @@ function searchAlbum() {
 		})
 }
 
+//게시물 작성하고 서브밋
 function addSingleTitle() {
 	if(document.getElementById("addArtist").value == "" || document.getElementById("addArtist").value == null){
+		alert("음악을 추가해주세요")
 		return
 	}
+	
+	//트랙별 하나씩 addsingletitle 해줌( url 추가한 트랙은 singletitle 테이블에 저장)
+	//이 후 게시글 musicboard 테이블에 저장
+		
+	//트랙 별 addsingletitle 해주기
 	for (var i = 0; i < numTrack; i++) {
 		if (document.getElementById("artist" + i) !== null) {
 			var artist = document.getElementById("artist" + i).value
@@ -190,29 +202,38 @@ function addSingleTitle() {
 			fetch(suburl)
 		}
 	}
+	
+	//게시글 작성 서브밋
 	document.getElementById("addMusicPro").submit();
 }
 
+//라이브보드, 뮤직비디오보드 작성시 영상등록안하거나 제목 입력안하면 리턴
 function addLiveMVBoard(){
 	if(document.getElementById("liveplayer" ) === null){
 		alert("영상을 등록해주세요")
 		return
 	}
+	if(document.getElementById("boardTitle").value == null || document.getElementById("boardTitle").value == ""){
+		alert("제목을 입력해주세요")
+		return
+	}
 	document.getElementById("addMusicPro").submit();
 }
 
+//ContextPath 구하는 함수
 function getContextPath() {
 	var hostIndex = location.href.indexOf(location.host) + location.host.length;
 	return location.href.substring(hostIndex, location.href.indexOf('/', hostIndex + 1));
 };
 
-
+//singletitle 테이블에서 트랙정보 가져오기
 function getSingleTitle(artist, title, i = "") {
 	var url = getContextPath() + '/board/getsingletitle?artist=' + artist + '&title=' + title
 	fetch(url).then(res => res.json())
 		.then(json => {
-			console.log(json)
 			document.getElementById("videoId" + i).value = json.videoId
+			
+			//트랙에 url저장되어있으면 플레이버튼 추가하고 플레이리스트 배열에 추가
 			if (json.url != null) {
 				var a = '<button class="btn btn-secondary" type="button" onclick="playmusic(' + i + ')"><img src="" >play</button>'
 				document.getElementById("playButton" + i).innerHTML = a
@@ -223,21 +244,27 @@ function getSingleTitle(artist, title, i = "") {
 					artist: json.artist,
 					title: json.title
 				}
+				//플레이리스트 배열에 추가
 				playList.push(trackinfo)
 			}
 		})
 }
 
+//선택한고 플레이
 function playmusic(i = "") {
+	//플레이리스트 인덱스를 현재 선택한곡으로 하여 플레이
 	nowindex = playList.findIndex(obj => obj.videoId == document.getElementById("videoId" + i).value)
 	makeplayer(nowindex)
 }
 
+//앨범첫곡부터플레이
 function playalbum() {
+	//플레이리스트 인덱스를 0으로 하여 플레이
 	nowindex = 0
 	makeplayer(nowindex)
 }
 
+//플레이리스트 다음 인덱스 플레이
 function nextmusic() {
 	if (nowindex < playList.length - 1) {
 		nowindex += 1
@@ -247,6 +274,7 @@ function nextmusic() {
 	}
 }
 
+//플레이리스트 이전 인덱스 플레이
 function previousmusic() {
 	if (nowindex > 0) {
 		nowindex -= 1
@@ -256,6 +284,7 @@ function previousmusic() {
 	}
 }
 
+//youtube iframe api 이용하여 앨범게시판, 싱글게시판 음악플레이
 function makeplayer(nowindex) {
 	document.getElementById("video").innerHTML = '<div><button id = "closebutton" type="button" class="btn-close" aria-label="Close" onclick="closemusic()"></button></div><div id="player"></div>';
 	player = new YT.Player('player', {
@@ -269,6 +298,7 @@ function makeplayer(nowindex) {
 	})
 }
 
+//youtube iframe api 이용하여 라이브게시판, 뮤직비디오게시판 음악플레이
 function loadLiveVideo() {
 	document.getElementById("livevideo").innerHTML = '<div id="liveplayer"></div>';
 	var videoId = document.getElementById("videoURL").value.split("v=")[1].split("&")[0]
@@ -285,6 +315,7 @@ function loadLiveVideo() {
 	})
 }
 
+//인덱스화면에서 오늘라이브,뮤직비디오 띄우는 iframe
 function loadIndexVideo(divname, videoId, i) {
 	document.getElementById(divname).innerHTML = '<div id="liveplayer' + i + '"></div>';
 	window.YT.ready(function() {
@@ -300,14 +331,14 @@ function loadIndexVideo(divname, videoId, i) {
 	})
 }
 
+//youtube iframe api: 영상 끝났을 시 자동으로 플레이리스트 다음 인덱스 재생
 function onPlayerStateChange(event) {
 	if (event.data == YT.PlayerState.ENDED) {
 		nextmusic()
 	}
 }
 
-
-
+//youtube iframe 종료
 function closemusic() {
 	player.destroy()
 	document.getElementById("closebutton").remove()
@@ -377,6 +408,7 @@ function addReply() {
 		document.getElementById("replyText").value = ""
 	})
 }
+
 //댓글리스트	
 function replyList(nowPage) {
 	var url = getContextPath() + "/board/replylist?boardNo=" + boardNo + "&type=" + boardType + "&nowPage=" + nowPage
@@ -384,7 +416,6 @@ function replyList(nowPage) {
 	fetch(url)
 		.then(res => res.json())
 		.then(json => {
-			console.log(json)
 			var a = ''
 			for (var i = 0; i < json.length; i++) {
 				a += '<li class="list-group-item" >'
@@ -402,7 +433,7 @@ function replyList(nowPage) {
 			}
 			document.getElementById("replyList").innerHTML = a
 		})
-
+	//게시글 내에서 페이징작업 비동기화 위해 AJAX로 처리
 	fetch(pgurl)
 		.then(res => res.json())
 		.then(json => {
@@ -431,9 +462,8 @@ function replyList(nowPage) {
 		})
 }
 
-//댓글수정창
+//댓글수정창(모달띄우기)
 function updateReply(reNo) {
-	console.log('ddddd')
 	if (modaldiv !== null) {
 		modaldiv.remove()
 	}
@@ -473,6 +503,7 @@ function newreText(reNo) {
 		})
 }
 
+//댓글삭제
 function deleteReply(reNo) {
 	var url = getContextPath() + "/board/deletereply?reNo=" + reNo
 	fetch(url)
@@ -486,6 +517,7 @@ function deleteReply(reNo) {
 		})
 }
 
+//댓글수
 function countReply() {
 	var url = getContextPath() + "/board/countreply?boardNo=" + boardNo
 	fetch(url)
@@ -495,13 +527,13 @@ function countReply() {
 		})
 }
 
+//내가쓴글 리스트
 function myBoard(bdType, nowPage) {
 	var url = getContextPath() + "/user/myboard?bdType=" + bdType + "&nowPage=" + nowPage
 	var urlpg = getContextPath() + "/user/myboardpageing?bdType=" + bdType + "&nowPage=" + nowPage
 	fetch(url)
 		.then(res => res.json())
 		.then(json => {
-			console.log(json)
 			var a = ''
 			for (var i = 0; i < json.length; i++) {
 				a += '<tr><td><a href="' + getContextPath() + '/board/musicboardpost?no=' + json[i].no + '">'
@@ -519,10 +551,10 @@ function myBoard(bdType, nowPage) {
 			}
 			document.getElementById("myBoard").innerHTML = a
 		})
+	//비동기처리 위해 페이징 AJAX
 	fetch(urlpg)
 		.then(res => res.json())
 		.then(json => {
-			console.log(json)
 			var a = ''
 			if (json.startPg > json.bottomLine) {
 				a += '<li class="page-item">'
@@ -547,13 +579,13 @@ function myBoard(bdType, nowPage) {
 		})
 }
 
+//내가추천누른 글 리스트
 function myLikeBoard(bdType, nowPage) {
 	var url = getContextPath() + "/user/mylikeboard?bdType=" + bdType + "&nowPage=" + nowPage
 	var urlpg = getContextPath() + "/user/mylikeboardpageing?bdType=" + bdType + "&nowPage=" + nowPage
 	fetch(url)
 		.then(res => res.json())
 		.then(json => {
-			console.log(json)
 			var a = ''
 			for (var i = 0; i < json.length; i++) {
 				a += '<tr><td><a href="' + getContextPath() + '/board/musicboardpost?no=' + json[i].no + '">'
@@ -571,10 +603,10 @@ function myLikeBoard(bdType, nowPage) {
 			}
 			document.getElementById("myLikeBoard").innerHTML = a
 		})
+		//비동기처리 위해 페이징 AJAX
 	fetch(urlpg)
 		.then(res => res.json())
 		.then(json => {
-			console.log(json)
 			var a = ''
 			if (json.startPg > json.bottomLine) {
 				a += '<li class="page-item">'
