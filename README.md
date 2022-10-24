@@ -25,7 +25,7 @@
 * RANDOMMB : Index 화면에 랜덤으로 띄울 MUSICBOARD 테이블. 매일 자정 랜덤으로 MUSICBOARD에서 교체
 ![image](https://user-images.githubusercontent.com/105340836/197390867-4039bba7-8c85-47d4-a2ac-a273eb44223e.png)
 
-## 주요 개발 사함
+## 주요 개발 사항
 * Spring Framework를 이용한 백엔드 개발
   * MVC패턴 프로젝트 구축
   * 카테고리 별 게시판 구현
