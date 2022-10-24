@@ -17,6 +17,12 @@
   * YouTube Iframe Player API
 
 ## ERD
+* USERINFO : 회원 정보 테이블
+* MUSICBOARD : 음악정보 공유 게시판 테이블
+* SINGLETITLE : MUSICBOARD 작성시 추가한 음원-YOUTUBE URL 저장 테이블
+* REPLY : MUSICBOARD 댓글 테이블
+* BOARDLIKE : MUSICBOARD 추천 테이블 (유저아이디, 게시글번호로 중복추천제한)
+* RANDOMMB : Index 화면에 랜덤으로 띄울 MUSICBOARD 테이블. 매일 자정 랜덤으로 MUSICBOARD에서 교체
 ![image](https://user-images.githubusercontent.com/105340836/197390867-4039bba7-8c85-47d4-a2ac-a273eb44223e.png)
 
 ## 주요 개발 사함
