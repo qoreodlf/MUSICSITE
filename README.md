@@ -25,7 +25,8 @@
   * 회원가입, 로그인, 회원정보 변경 등 
   
 * Oracle Database 이용한 DB 구축
-  * MyBatis로 백엔드 서버와 연결
+  * DB 테이블 설계
+  * MyBatis로 백엔드 서버와 연결 및 SQL Query 
   
 * AJAX 이용한 프론트, 백엔드 비동기 통신
   * 댓글, 추천 기능 등 동적 처리
