@@ -26,9 +26,11 @@
 ![image](https://user-images.githubusercontent.com/105340836/197390867-4039bba7-8c85-47d4-a2ac-a273eb44223e.png)
 
 ## 주요 개발 사함
-* Spring Framework를 이용한 MVC패턴 백엔드 개발
+* Spring Framework를 이용한 백엔드 개발
+  * MVC패턴 프로젝트 구축
   * 카테고리 별 게시판 구현
   * 회원가입, 로그인, 회원정보 변경 등 
+  * 그 외 프로젝트에 필요한 백엔드 기능 구현
   
 * Oracle Database 이용한 DB 구축
   * DB 테이블 설계
@@ -53,5 +55,14 @@
   * 앨범 게시판의 경우 앨범 전체를 연속 재생할 수 있습니다. (트랙 종료 시 다음트랙 자동 재생)
 
 ![albumplayex](https://user-images.githubusercontent.com/105340836/197396080-1633a66d-a607-4fa4-aea6-bc3cf0e96711.gif)
+
+## 개선 사항
+* Index 화면에서 매일 랜덤으로 게시글 추천 구현
+  * DB에서 랜덤으로 게시글 저장할 테이블 생성
+  * Spring의 Scheduler 기능 사용하여 자정마다 추천 게시글 테이블 업데이트
+
+* 게시판 카테고리를 세션으로 분류 세션 만료 시 문제 발생
+  * URL에 게시판 카테고리를 파라미터로 붙여 게시판 분류
+
 
 
