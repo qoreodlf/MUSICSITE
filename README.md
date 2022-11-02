@@ -46,16 +46,26 @@
 
 ## 기능 구현
 * 게시판 작성 (음원 등록)
-  * 아티스트와 음악제목을 검색하고 YOUTUBE URL을 추가합니다.
+  * 아티스트와 음악제목을 검색하면 Last.fm을 통해 음원 정보를 가져옵니다.
+  * Last.fm을 통해 불러온 음원에 YOUTUBE URL을 추가하여 게시글을 등록합니다.
+  * 게시물 정보는 MUSICBOARD 테이블에 저장되고 음원의 YOUTUBE URL은 음원 정보와 함께 SINGLETITLE 테이블에 저장됩니다.
 
-![addex](https://user-images.githubusercontent.com/105340836/197394642-5d45e98f-8d06-4aa1-aa69-052581656f5f.gif)
+  ![addex](https://user-images.githubusercontent.com/105340836/197394642-5d45e98f-8d06-4aa1-aa69-052581656f5f.gif)
+  
+  * 이미 SINGLETITLE 테이블에 등록되어 있는 음원은 YOUTUBE URL등록 부분이 나타나지 않습니다.
+  
+  ![image](https://user-images.githubusercontent.com/105340836/199463794-ea30f72e-de21-4f7b-8f9e-790be65d1667.png)
 
+  
+  
 * 게시판
   * 게시판 작성 시 등록한 YOUTUBE URL과 YouTube Iframe Player API를 활용하여 음원을 재생할 수 있습니다.
   * 앨범 게시판의 경우 앨범 전체를 연속 재생할 수 있습니다. (트랙 종료 시 다음트랙 자동 재생)
 
-![albumplayex](https://user-images.githubusercontent.com/105340836/197396080-1633a66d-a607-4fa4-aea6-bc3cf0e96711.gif)
-
+  ![albumplayex](https://user-images.githubusercontent.com/105340836/197396080-1633a66d-a607-4fa4-aea6-bc3cf0e96711.gif)
+  
+  
+  
 ## 개선 사항
 * Index 화면에서 매일 랜덤으로 게시글 추천 구현
   * DB에서 랜덤으로 게시글 저장할 테이블 생성
